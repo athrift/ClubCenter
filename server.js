@@ -26,17 +26,51 @@ mongoose.connection.on('connected', () => {
     console.log('Mongoose is connected!');
 });
 
+// Creating  a Mongoose Schema
+const Schema = mongoose.Schema;
+const BlogPostSchema = new Schema({
+    username: String,
+    password: String,
+    date: {
+        type: String,
+        default: Date.now()
+    }
+});
+
+// Model
+const BlogPost = mongoose.model('BlogPost', BlogPostSchema);
+
+// Adding data to the database
+data = {
+    username: 'demo_user',
+    password: 'demo_pass'
+}
+
+// Creating a new instance of the model and passing in the data
+// const newBlogPost = new BlogPost(data);
+// newBlogPost.save((error) => {
+//     if (error) {
+//         console.log('There was an error in saving the data.');
+//     } else {
+//         console.log('Data has been saved.');
+//     }
+// });
+
+//module.exports = BlogPost;
 
 // HTTP Request Logger
 app.use(morgan('tiny'));
 
 // Setting up Demo Routes 
 app.get('/api', (req, res) => {
-    const data = {
-        username: 'isha',
-        password: 'cs348'
-    };
-    res.json(data);
+    BlogPost.find({})
+        .then((data) => {
+            console.log('Data: ', data);
+            res.json(data);
+        })
+        .catch((error) => {
+            console.log('error: ', daerrorta);
+        });
 });
 
 app.listen(PORT, console.log(`Server is starting at ${PORT}`));
