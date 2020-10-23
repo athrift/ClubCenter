@@ -8,6 +8,18 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+// Connecting to the MongoDb database
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/ClubCenter', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+
+// Verufying the connection to the database using a listener
+mongoose.connection.on('connected', () => {
+    console.log('Mongoose is connected!');
+});
+
+
 // HTTP Request Logger
 app.use(morgan('tiny'));
 
