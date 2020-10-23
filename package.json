@@ -1,6 +1,36 @@
 {
+  "name": "ClubCenter",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
+    "axios": "^0.20.0",
     "bootstrap": "^4.5.3",
-    "react-bootstrap": "^1.4.0"
-  }
+    "concurrently": "^5.3.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^5.10.10",
+    "morgan": "^1.10.0",
+    "react-bootstrap": "^1.4.0",
+    "react-scripts": "^3.4.4"
+  },
+  "description": "CS 348 Project: ClubCenter is an online web-application that allows for clubs and organizations at Purdue University to post about upcoming events so that students can easily search for ways to be involved on campus.",
+  "main": "server.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "client": "cd react-proj && npm start",
+    "dev": "concurrently -n 'server,client' -c 'red,green' \"nodemon server.js\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ishamahadalkar/ClubCenter.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ishamahadalkar/ClubCenter/issues"
+  },
+  "homepage": "https://github.com/ishamahadalkar/ClubCenter#readme"
 }
