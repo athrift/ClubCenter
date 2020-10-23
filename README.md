@@ -7,3 +7,14 @@ yarn start
 
 To run the Server and the React website concurrently type the following in terminal:<br />
 npm run dev
+
+routes:
+Storing the multiple webpage routes in this folder 
+
+models:
+Storing the various data models in this folder 
+
+Database:
+Hosted on MongoDb 
+Username: imahadal@purdue.edu
+Password: cs348-clubcenter

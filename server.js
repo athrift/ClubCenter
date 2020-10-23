@@ -8,7 +8,9 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-// MongoDb Database
+const routes = require('./routes/api');
+
+// MongoDb Cloud Atlas Database
 // user: isha password: cs348-clubcenter
 // Connecting to the MongoDb CLuster
 // mongodb+srv://isha:<password>@clubcenter.277rg.mongodb.net/<dbname>?retryWrites=true&w=majority
@@ -21,24 +23,17 @@ mongoose.connect(MONGODB_URI || 'mongodb://localhost/ClubCenter', {
     useUnifiedTopology: true
 });
 
-// Verufying the connection to the database using a listener
+// Only using the local mongoose database
+// Connecting to the MongoDb database
+// mongoose.connect('mongodb://localhost/ClubCenter', {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true
+// });
+
 mongoose.connection.on('connected', () => {
     console.log('Mongoose is connected!');
 });
 
-// Creating  a Mongoose Schema
-const Schema = mongoose.Schema;
-const BlogPostSchema = new Schema({
-    username: String,
-    password: String,
-    date: {
-        type: String,
-        default: Date.now()
-    }
-});
-
-// Model
-const BlogPost = mongoose.model('BlogPost', BlogPostSchema);
 
 // Adding data to the database
 data = {
@@ -46,7 +41,7 @@ data = {
     password: 'demo_pass'
 }
 
-// Creating a new instance of the model and passing in the data
+// Creating a new instance of the model and passing in the dummy data
 // const newBlogPost = new BlogPost(data);
 // newBlogPost.save((error) => {
 //     if (error) {
@@ -60,17 +55,6 @@ data = {
 
 // HTTP Request Logger
 app.use(morgan('tiny'));
-
-// Setting up Demo Routes 
-app.get('/api', (req, res) => {
-    BlogPost.find({})
-        .then((data) => {
-            console.log('Data: ', data);
-            res.json(data);
-        })
-        .catch((error) => {
-            console.log('error: ', daerrorta);
-        });
-});
+app.use('/api', routes);
 
 app.listen(PORT, console.log(`Server is starting at ${PORT}`));
