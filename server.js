@@ -8,8 +8,15 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+// MongoDb Database
+// user: isha password: cs348-clubcenter
+// Connecting to the MongoDb CLuster
+// mongodb+srv://isha:<password>@clubcenter.277rg.mongodb.net/<dbname>?retryWrites=true&w=majority
+
+// Currently using the user 'isha' and the password 'cs348-clubcenter'
+const MONGODB_URI = 'mongodb+srv://isha:cs348-clubcenter@clubcenter.277rg.mongodb.net/<dbname>?retryWrites=true&w=majority'
 // Connecting to the MongoDb database
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/ClubCenter', {
+mongoose.connect(MONGODB_URI || 'mongodb://localhost/ClubCenter', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
