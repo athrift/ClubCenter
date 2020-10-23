@@ -4,3 +4,6 @@ CS 348 Project: ClubCenter is an online web-application that allows for clubs an
 To run React Website type the following in terminal:<br />
 cd react-proj<br />
 yarn start
+
+To run the Server and the React website concurrently type the following in terminal:<br />
+npm run dev
