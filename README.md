@@ -18,3 +18,10 @@ Database:
 Hosted on MongoDb 
 Username: imahadal@purdue.edu
 Password: cs348-clubcenter
+
+Ports:
+Server is running on 8080
+Client (Actual Page) is running on 3000
+
+Packages Installed:
+MongoDb

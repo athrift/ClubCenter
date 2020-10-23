@@ -18,19 +18,17 @@ class App extends React.Component {
   // Function which handles the user input 
   // i.e when user inputs the username and password
 
-  // handleChange = ({ target }) => {
-  //   const { name, value } = target;
-  //   this.setState({ [name]: value });
-  // };
+  handleChange = ({ target }) => {
+    const { name, value } = target;
+    this.setState({ [name]: value });
+  };
 
-  handleChange = (event) => {
-    const target = event.target;
-    const name = target.name;
-    const value = target.value;
+  // Function to reset user input
+  resetUserInputs = () => {
     this.setState({
-      [name]: value
+      username: '',
+      password: ''
     });
-
   };
 
   // Function which handles the chnages when the Submit Button is clicked
@@ -51,7 +49,7 @@ class App extends React.Component {
       .then(() => {
         console.log('Data has been sent to the server');
         this.resetUserInputs();
-        this.getBlogPost();
+        // this.getBlogPost();
       })
       .catch(() => {
         console.log('Internal server error');
@@ -69,12 +67,12 @@ class App extends React.Component {
           <Form onSubmit={this.submit}>
             <Form.Group controlId="FormEmail">
               <Form.Label>Email Address</Form.Label>
-              <Form.Control type="email" placeholder="example@email.com" value="this.state.username" onChange={this.handleChange} />
+              <Form.Control type="text" placeholder="example@email.com" value={this.state.username} onChange={this.handleChange} />
               {/* <Form.Text className="text-muted"></Form.Text> */}
             </Form.Group>
             <Form.Group controlId="FormPassword">
               <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Password" value="this.state.password" onChange={this.handleChange} />
+              <Form.Control type="text" placeholder="Password" value={this.state.password} onChange={this.handleChange} />
             </Form.Group>
             <Button variant="secondary" type="submit">Sign Up</Button>
           </Form>

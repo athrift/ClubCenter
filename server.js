@@ -4,6 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const path = require('path');
+const cors = require('cors');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -34,6 +35,10 @@ mongoose.connection.on('connected', () => {
     console.log('Mongoose is connected!');
 });
 
+// Data parsing
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 
 // Adding data to the database
 data = {
@@ -53,6 +58,7 @@ data = {
 
 //module.exports = BlogPost;
 
+app.use(cors())
 // HTTP Request Logger
 app.use(morgan('tiny'));
 app.use('/api', routes);
