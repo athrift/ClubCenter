@@ -1,6 +1,10 @@
 {
+  "name": "ClubCenter",
+  "version": "0.1.0",
+  "private": "true",
   "dependencies": {
     "bootstrap": "^4.5.3",
-    "react-bootstrap": "^1.4.0"
+    "react-bootstrap": "^1.4.0",
+    "react-scripts": "^3.4.4"
   }
 }
