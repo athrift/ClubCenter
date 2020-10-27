@@ -6,94 +6,47 @@ import './App.css';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
+//Add external pages
+
 import Create from "./Create";
+import Login from "./Login";
+
+//Add internal pages
+
+const Home = () => (
+  <div>
+    <h2>Home</h2>
+  </div>
+);
 
 class App extends React.Component {
 
-  state = {
-    username: '',
-    password: '',
-    // posts: []
-  };
-
-  // Function which handles the user input 
-  // i.e when user inputs the username and password
-
-  handleChange = ({ target }) => {
-    const { name, value } = target;
-    this.setState({ [name]: value });
-  };
-  // handleChange = (event) => {
-  //   const target = event.target;
-  //   const name = target.name;
-  //   const value = target.value;
-
-  //   this.setState({ [name]: value });
-  // };
-
-  // Function to reset user input
-  resetUserInputs = () => {
-    this.setState({
-      username: '',
-      password: ''
-    });
-  };
-
-  // Function which handles the chnages when the Submit Button is clicked
-  submit = (event) => {
-    event.preventDefault();
-
-    const payload = {
-      username: this.state.username,
-      password: this.state.password
-    };
-
-    // Sending the data from the html form to the server
-    axios({
-      url: '/api/save',
-      method: 'POST',
-      data: payload
-    })
-      .then(() => {
-        console.log('Data has been sent to the server');
-        this.resetUserInputs();
-        // this.getBlogPost();
-      })
-      .catch(() => {
-        console.log('Internal server error');
-      });;
-  };
-
-  render() {
+  render () {
 
     console.log('State: ', this.state);
-
-    return (
-      <div className="App">
-        <header className="App-header">
-	  <div>
-	    <Link to="/create">Create Account</Link>
-	  </div>
-	  {/* <Container> */}
-          <Form onSubmit={this.submit}>
-            <Form.Group controlId="FormEmail">
-              <Form.Label>Email Address</Form.Label>
-              <Form.Control type="text" name="username" placeholder="example@email.com" value={this.state.username} onChange={this.handleChange} />
-              {/* <Form.Text className="text-muted"></Form.Text> */}
-            </Form.Group>
-            <Form.Group controlId="FormPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control type="text" name="password" placeholder="Password" value={this.state.password} onChange={this.handleChange} />
-            </Form.Group>
-            <Button variant="secondary" type="submit">Sign In</Button>
-          </Form>
-          {/* </Container> */}
-	  <Route path="/create" component={Create} />
-        </header>
-      </div >
+    return(
+    <div className="App">
+      <header className="App-header">
+      <nav className="navbar navbar-light">
+        <ul className="nav navbar-nav">
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/Create">Create Account</Link>
+          </li>
+          <li>
+            <Link to="/Login">Login</Link>
+          </li>
+        </ul>
+      </nav>
+      <Route exact={true} path="/" component={Home} />
+      <Route path="/Create" component={Create} />
+      <Route path="/Login" component={Login} />
+      </header>
+    </div>
     );
   }
-
 }
 
 export default App;
