@@ -2,17 +2,15 @@ import React, { Component } from "react";
 import { Link, Route, Switch } from "react-router-dom";
 import axios from 'axios';
 import logo, { ReactComponent } from './logo.svg';
-import './App.css';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-import Create from "./Create";
-
-class App extends React.Component {
+class Create extends React.Component {
 
   state = {
     username: '',
     password: '',
+    name: '',
     // posts: []
   };
 
@@ -35,7 +33,8 @@ class App extends React.Component {
   resetUserInputs = () => {
     this.setState({
       username: '',
-      password: ''
+      password: '',
+      name: '',
     });
   };
 
@@ -45,7 +44,8 @@ class App extends React.Component {
 
     const payload = {
       username: this.state.username,
-      password: this.state.password
+      password: this.state.password,
+      name: this.state.name
     };
 
     // Sending the data from the html form to the server
@@ -69,11 +69,8 @@ class App extends React.Component {
     console.log('State: ', this.state);
 
     return (
-      <div className="App">
-        <header className="App-header">
-	  <div>
-	    <Link to="/create">Create Account</Link>
-	  </div>
+      <div className="Create">
+        <header className="Create-header">
 	  {/* <Container> */}
           <Form onSubmit={this.submit}>
             <Form.Group controlId="FormEmail">
@@ -85,10 +82,14 @@ class App extends React.Component {
               <Form.Label>Password</Form.Label>
               <Form.Control type="text" name="password" placeholder="Password" value={this.state.password} onChange={this.handleChange} />
             </Form.Group>
-            <Button variant="secondary" type="submit">Sign Up</Button>
+            <Form.Group controlId="FormName">
+              <Form.Label>Name</Form.Label>
+              <Form.Control type="text" name="name" placeholder="Name" value={this.state.name} onChange={this.handleChange} />
+            </Form.Group>
+
+	    <Button variant="secondary" type="submit">Create Account</Button>
           </Form>
           {/* </Container> */}
-	  <Route path="/create" component={Create} />
         </header>
       </div >
     );
@@ -96,4 +97,4 @@ class App extends React.Component {
 
 }
 
-export default App;
+export default Create;
