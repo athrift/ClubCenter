@@ -85,7 +85,7 @@ class App extends React.Component {
               <Form.Label>Password</Form.Label>
               <Form.Control type="text" name="password" placeholder="Password" value={this.state.password} onChange={this.handleChange} />
             </Form.Group>
-            <Button variant="secondary" type="submit">Sign Up</Button>
+            <Button variant="secondary" type="submit">Sign In</Button>
           </Form>
           {/* </Container> */}
 	  <Route path="/create" component={Create} />
