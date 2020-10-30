@@ -25,19 +25,44 @@
 }
 
 .Create-header {
-  
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   padding: 50px;
 }
+
+.nav {
+  position: fixed;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  overflow: hidden;
+  padding: 50px;
+}
+
+.nav a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+
+.mainLogo {
+  width: 40%;
+  float: left;
+}
+
 .Student {
-  padding: 100px;
+  padding: 90px;
   background-color: #414347;
 }
 .Org {
- padding: 100px;
+ padding: 90px;
  background-color: #4f5052;
 }
 .App-link {

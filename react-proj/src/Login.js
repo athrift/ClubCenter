@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Link, Route, Switch } from "react-router-dom";
 import axios from 'axios';
 import logo, { ReactComponent } from './logo.svg';
-import './Login.css';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
@@ -14,7 +13,7 @@ class Login extends React.Component {
     // posts: []
   };
 
-  // Function which handles the user input 
+  // Function which handles the user input
   // i.e when user inputs the username and password
 
   handleChange = ({ target }) => {
@@ -70,18 +69,23 @@ class Login extends React.Component {
       <div className="Login">
         <header className="Login-header">
 	  {/* <Container> */}
+          <div className="Student">
           <Form onSubmit={this.submit}>
             <Form.Group controlId="FormEmail">
-              <Form.Label>Email Address</Form.Label>
+              <h2>Login</h2>
+              <p></p>
+              <Form.Label>Email</Form.Label>
+
               <Form.Control type="text" name="username" placeholder="example@email.com" value={this.state.username} onChange={this.handleChange} />
-              {/* <Form.Text className="text-muted"></Form.Text> */}
             </Form.Group>
             <Form.Group controlId="FormPassword">
               <Form.Label>Password</Form.Label>
-              <Form.Control type="text" name="password" placeholder="Password" value={this.state.password} onChange={this.handleChange} />
+              <Form.Control type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.handleChange} />
             </Form.Group>
-            <Button variant="secondary" type="submit">Sign Up</Button>
+            <Button variant="secondary" type="submit">Create Account</Button>
           </Form>
+          </div>
+              {/* <Form.Text className="text-muted"></Form.Text> */}
           {/* </Container> */}
         </header>
       </div >
@@ -91,4 +95,3 @@ class Login extends React.Component {
 }
 
 export default Login;
-

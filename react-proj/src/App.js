@@ -28,24 +28,18 @@ class App extends React.Component {
     return(
     <div className="App">
       <header className="App-header">
-      <nav className="navbar navbar-light">
         <ul className="nav navbar-nav">
           <li>
             <Link to="/">
-              <img src={image} alt="ClubCenter"/>
+              <img src={image} alt="ClubCenter" class="mainLogo"/>
 	          </Link>
-	        </li>
-          <li>
             <Link to="/Create">Create Account</Link>
-          </li>
-          <li>
             <Link to="/Login">Login</Link>
           </li>
         </ul>
-      </nav>
-      <Route exact={true} path="/" component={Home} />
-      <Route path="/Create" component={Create} />
-      <Route path="/Login" component={Login} />
+      <Route exact={true} path="/" component={Home} className="Home"/>
+      <Route path="/Create" component={Create} className="Create"/>
+      <Route path="/Login" component={Login} className="Login"/>
       </header>
     </div>
     );
