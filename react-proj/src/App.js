@@ -5,6 +5,7 @@ import logo, { ReactComponent } from './logo.svg';
 import './App.css';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import image from "./Images/clubcenter.png";
 
 //Add external pages
 
@@ -14,7 +15,7 @@ import Login from "./Login";
 //Add internal pages
 
 const Home = () => (
-  <div>
+  <div className="Homepage">
     <h2>Home</h2>
   </div>
 );
@@ -30,8 +31,10 @@ class App extends React.Component {
       <nav className="navbar navbar-light">
         <ul className="nav navbar-nav">
           <li>
-            <Link to="/">Home</Link>
-          </li>
+            <Link to="/">
+              <img src={image} alt="ClubCenter"/>
+	          </Link>
+	        </li>
           <li>
             <Link to="/Create">Create Account</Link>
           </li>
