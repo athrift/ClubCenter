@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 class Login extends React.Component {
 
   state = {
-    email: "",
+    username: "",
     password: ""
   };
 

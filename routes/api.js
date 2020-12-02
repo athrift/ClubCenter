@@ -10,59 +10,10 @@ const Organization = require('../models/Organization');
 
 // Load input validation
 const validateRegisterInput = require("../validation/register");
+const validateOrgRegisterInput = require("../validation/org_register");
 const validateLoginInput = require("../validation/login");
 
 // Routes
-
-// Setting up Demo Routes 
-
-router.get('/', (req, res) => {
-
-    BlogPost.find({})
-        .then((data) => {
-            console.log('Data: ', data);
-            res.json(data);
-        })
-        .catch((error) => {
-            console.log('error: ', daerrorta);
-        });
-
-    Student.find({})
-        .then((data) => {
-            console.log('Data: ', data);
-            res.json(data);
-        })
-        .catch((error) => {
-            console.log('error: ', daerrorta);
-        });
-    Organization.find({})
-        .then((data) => {
-            console.log('Data: ', data);
-            res.json(data);
-        })
-        .catch((error) => {
-            console.log('error: ', daerrorta);
-        });
-});
-
-// router.get('/login', controllers.getStudentByEmail)
-
-
-// router.post('/register', (req, res) => {
-//     console.log('Body: ', req.body)
-//     const data = req.body;
-//     const newStudent = new Student(data);
-
-//     newStudent.save((error) => {
-//         if (error) {
-//             res.status(500).json({ msg: 'Sorry, internal server errors' });
-//             return;
-//         }
-//         return res.json({
-//             msg: 'Your data has been saved!'
-//         });
-//     });
-// });
 
 // @route POST api/register
 // @desc Register new Student
@@ -73,7 +24,7 @@ router.post("/register", (req, res) => {
     const { errors, isValid } = validateRegisterInput(req.body);
     // Check validation
     if (!isValid) {
-        console.log("DUMB");
+        console.log("Invalid data");
         return res.status(400).json(errors);
     }
     Student.findOne({ username: data.username }).then(user => {
@@ -101,23 +52,41 @@ router.post("/register", (req, res) => {
     });
 });
 
-router.post('/registerOrg', (req, res) => {
-    console.log('Body: ', req.body)
+// @route POST api/registerOrg
+// @desc Register new Student
+// @access Public
+router.post("/registerOrg", (req, res) => {
     const data = req.body;
-    const newOrg = new Organization(data);
-
-    newOrg.save((error) => {
-        if (error) {
-            res.status(500).json({ msg: 'Sorry, internal server errors' });
-            return;
+    // Form validation
+    const { errors, isValid } = validateOrgRegisterInput(req.body);
+    // Check validation
+    if (!isValid) {
+        console.log("Invalid data");
+        return res.status(400).json(errors);
+    }
+    Student.findOne({ orgUser: data.orgUser }).then(user => {
+        if (user) {
+            console.log("Organization already exists");
+            return res.status(400).json({ email: "Organization Email already exists" });
+        } else {
+            const newOrganization = new Organization({
+                orgUser: data.orgUser,
+                orgPass: data.orgPass,
+                orgName: data.orgName
+            });
+            // Hash password before saving in database
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(newOrganization.orgPass, salt, (err, hash) => {
+                    if (err) throw err;
+                    newOrganization.orgPass = hash;
+                    newOrganization
+                        .save()
+                        .then(user => res.json(user))
+                        .catch(err => console.log(err));
+                });
+            });
         }
-        // BlogPost
-        return res.json({
-            msg: 'Your data has been saved!'
-        });
     });
-
-
 });
 
 // @route POST api/users/login
@@ -125,22 +94,26 @@ router.post('/registerOrg', (req, res) => {
 // @access Public
 router.post("/login", (req, res) => {
     // Form validation
-    const { errors, isValid } = validateLoginInput(req.body);
+    const data = req.body;
+    const { errors, isValid } = validateLoginInput(data);
     // Check validation
     if (!isValid) {
+        console.log("Invalid data");
         return res.status(400).json(errors);
     }
-    const email = req.body.email;
-    const password = req.body.password;
+    const username = data.username;
+    const password = data.password;
     // Find user by email
-    Student.findOne({ email }).then(user => {
+    Student.findOne({ username }).then(user => {
         // Check if user exists
         if (!user) {
-            return res.status(404).json({ emailnotfound: "Email not found" });
+            console.log("Username does not exist");
+            return res.status(404).json({ emailnotfound: "Username does not exist!" });
         }
         // Check password
         bcrypt.compare(password, user.password).then(isMatch => {
             if (isMatch) {
+                console.log("User Logged In");
                 // User matched
                 // Create JWT Payload
                 const payload = {
@@ -164,7 +137,7 @@ router.post("/login", (req, res) => {
             } else {
                 return res
                     .status(400)
-                    .json({ passwordincorrect: "Password incorrect" });
+                    .json({ passwordincorrect: "Password entered was incorrect!" });
             }
         });
     });

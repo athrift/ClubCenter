@@ -36,7 +36,7 @@ class Create extends React.Component {
     });
   };
 
-  // Function which handles the chnages when the Submit Button is clicked
+  // Function which handles the chnages when the Submit Button is clicked for Student
   submit = (event) => {
     event.preventDefault();
 
@@ -60,6 +60,8 @@ class Create extends React.Component {
         console.log('Internal server error');
       });;
   };
+
+  // Function which handles the chnages when the Submit Button is clicked for Organisation
   submit2 = (event) => {
     event.preventDefault();
 
