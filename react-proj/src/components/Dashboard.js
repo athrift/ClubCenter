@@ -10,6 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 class Dashboard extends Component {
     logout = e => {
         e.preventDefault();
+        console.log("User Logged Out\n")
         this.props.logoutUser();
     };
     render() {
