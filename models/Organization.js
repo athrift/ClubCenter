@@ -14,6 +14,6 @@ const OrganizationSchema = new Schema({
 });
 
 // Model
-const Organization = mongoose.model('Organization', OrganizationSchema);
+const Organization = mongoose.model('organizations', OrganizationSchema);
 
 module.exports = Organization;

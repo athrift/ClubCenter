@@ -5,10 +5,12 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const path = require('path');
 const cors = require('cors');
+const passport = require("passport");
 
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+// Routes
 const routes = require('./routes/api');
 
 // MongoDb Cloud Atlas Database
@@ -18,18 +20,15 @@ const routes = require('./routes/api');
 
 // Currently using the user 'isha' and the password 'cs348-clubcenter'
 const MONGODB_URI = 'mongodb+srv://isha:cs348-clubcenter@clubcenter.277rg.mongodb.net/<dbname>?retryWrites=true&w=majority'
+
+// DB Config
+// const MONGODB_URI = require("./config/keys").mongoURI;
+
 // Connecting to the MongoDb database
 mongoose.connect(MONGODB_URI || 'mongodb://localhost/ClubCenter', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
-
-// Only using the local mongoose database
-// Connecting to the MongoDb database
-// mongoose.connect('mongodb://localhost/ClubCenter', {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true
-// });
 
 mongoose.connection.on('connected', () => {
     console.log('Mongoose is connected!');
@@ -39,28 +38,19 @@ mongoose.connection.on('connected', () => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Passport middleware
+app.use(passport.initialize());
 
-// Adding data to the database
-data = {
-    username: 'demo_user',
-    password: 'demo_pass'
-}
+// Passport config
+require("./config/passport")(passport);
 
-// Creating a new instance of the model and passing in the dummy data
-// const newBlogPost = new BlogPost(data);
-// newBlogPost.save((error) => {
-//     if (error) {
-//         console.log('There was an error in saving the data.');
-//     } else {
-//         console.log('Data has been saved.');
-//     }
-// });
-
-//module.exports = BlogPost;
 
 app.use(cors())
 // HTTP Request Logger
 app.use(morgan('tiny'));
+
+// Routes
 app.use('/api', routes);
+
 
 app.listen(PORT, console.log(`Server is starting at ${PORT}`));

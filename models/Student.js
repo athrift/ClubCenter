@@ -1,4 +1,3 @@
-  
 const mongoose = require('mongoose');
 
 // Creating  a Mongoose Schema
@@ -14,6 +13,6 @@ const StudentSchema = new Schema({
 });
 
 // Model
-const Student = mongoose.model('Student', StudentSchema);
+const Student = mongoose.model('students', StudentSchema);
 
 module.exports = Student;
