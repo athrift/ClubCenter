@@ -31,6 +31,13 @@ class Create extends React.Component {
     }
   }
 
+  // componentDidMount() {
+  //   // If logged in and user navigates to Create page, should redirect them to dashboard
+  //   if (this.props.auth.isAuthenticated) {
+  //     this.props.history.push("/Dashboard");
+  //   }
+  // }
+
   // Function which handles the user input 
   // i.e when user inputs the username and password
 

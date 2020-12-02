@@ -23,7 +23,7 @@ class Login extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
-      this.props.history.push("/"); // push user to homepage when they login
+      this.props.history.push("/Dashboard"); // push user to Dashboard when they login
     }
     if (nextProps.errors) {
       this.setState({
@@ -31,6 +31,14 @@ class Login extends React.Component {
       });
     }
   }
+
+  // TODO: Fix the part where a Logged in User cannot navigate to Create/Login Pages 
+  // componentDidMount() {
+  //   // If logged in and user navigates to Login page, should redirect them to dashboard
+  //   if (this.props.auth.isAuthenticated) {
+  //     this.props.history.push("/Dashboard");
+  //   }
+  // }
 
   handleChange = ({ target }) => {
     const { name, value } = target;
