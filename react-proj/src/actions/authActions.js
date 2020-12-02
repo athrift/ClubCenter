@@ -10,7 +10,7 @@ import {
 // Register User
 export const registerUser = (userData, history) => dispatch => {
     axios
-        .post("/register", userData)
+        .post("/api/register", userData)
         .then(res => history.push("/")) // re-direct to Homepage on successful register
         .catch(err =>
             dispatch({
@@ -23,7 +23,7 @@ export const registerUser = (userData, history) => dispatch => {
 // Register Organization
 export const registerOrg = (orgData, history) => dispatch => {
     axios
-        .post("/registerOrg", orgData)
+        .post("/api/registerOrg", orgData)
         .then(res => history.push("/")) // re-direct to Homepage on successful register
         .catch(err =>
             dispatch({
@@ -36,7 +36,7 @@ export const registerOrg = (orgData, history) => dispatch => {
 // Student Login - get user token
 export const loginUser = userData => dispatch => {
     axios
-        .post("/login", userData)
+        .post("/api/login", userData)
         .then(res => {
             // Save to localStorage
             // Set token to localStorage
@@ -60,7 +60,7 @@ export const loginUser = userData => dispatch => {
 // Organization Login - get user token
 export const loginOrg = orgData => dispatch => {
     axios
-        .post("/loginOrg", orgData)
+        .post("/api/loginOrg", orgData)
         .then(res => {
             // Save to localStorage
             // Set token to localStorage

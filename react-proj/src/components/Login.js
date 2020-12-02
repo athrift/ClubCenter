@@ -1,9 +1,15 @@
 import React, { Component } from "react";
-import { Link, Route, Switch } from "react-router-dom";
+import { Link, Route, withRouter, Switch } from "react-router-dom";
 import axios from 'axios';
 // import logo, { ReactComponent } from './Images/logo.svg';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
+
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { loginUser } from "../actions/authActions";
+import { loginOrg } from "../actions/authActions";
+import classnames from "classnames";
 
 class Login extends React.Component {
 
@@ -11,8 +17,20 @@ class Login extends React.Component {
     username: "",
     password: "",
     orgUser: '',
-    orgPass: ''
+    orgPass: '',
+    errors: {}
   };
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.auth.isAuthenticated) {
+      this.props.history.push("/"); // push user to homepage when they login
+    }
+    if (nextProps.errors) {
+      this.setState({
+        errors: nextProps.errors
+      });
+    }
+  }
 
   handleChange = ({ target }) => {
     const { name, value } = target;
@@ -38,19 +56,21 @@ class Login extends React.Component {
       password: this.state.password
     };
 
+    this.props.loginUser(payload); // since we handle the redirect within our component, we don't need to pass in this.props.history as a parameter
+
     // Sending the data from the html form to the server
-    axios({
-      url: '/api/login',
-      method: 'POST',
-      data: payload
-    })
-      .then(() => {
-        console.log('Data has been sent to the server');
-        this.resetUserInputs();
-      })
-      .catch(() => {
-        console.log('Internal server error');
-      });;
+    // axios({
+    //   url: '/api/login',
+    //   method: 'POST',
+    //   data: payload
+    // })
+    //   .then(() => {
+    //     console.log('Data has been sent to the server');
+    //     this.resetUserInputs();
+    //   })
+    //   .catch(() => {
+    //     console.log('Internal server error');
+    //   });;
   };
 
   // Function which handles the changes when the Submit Button is clicked
@@ -62,23 +82,26 @@ class Login extends React.Component {
       orgPass: this.state.orgPass
     };
 
+    this.props.loginOrg(payload);
+
     // Sending the data from the html form to the server
-    axios({
-      url: '/api/loginOrg',
-      method: 'POST',
-      data: payload
-    })
-      .then(() => {
-        console.log('Data has been sent to the server');
-        this.resetUserInputs();
-      })
-      .catch(() => {
-        console.log('Internal server error');
-      });;
+    // axios({
+    //   url: '/api/loginOrg',
+    //   method: 'POST',
+    //   data: payload
+    // })
+    //   .then(() => {
+    //     console.log('Data has been sent to the server');
+    //     this.resetUserInputs();
+    //   })
+    //   .catch(() => {
+    //     console.log('Internal server error');
+    //   });;
   };
 
   render() {
 
+    const { errors } = this.state;
     console.log('State: ', this.state);
 
     return (
@@ -90,12 +113,27 @@ class Login extends React.Component {
                 <h2>Student</h2>
                 <p></p>
                 <Form.Label>Email</Form.Label>
-
-                <Form.Control type="text" name="username" placeholder="example@email.com" value={this.state.username} onChange={this.handleChange} />
+                <Form.Control type="text" name="username" placeholder="example@email.com"
+                  value={this.state.username} onChange={this.handleChange}
+                  className={classnames("", {
+                    invalid: errors.email || errors.emailnotfound
+                  })} />
+                <span className="red-text">
+                  {errors.email}
+                  {errors.emailnotfound}
+                </span>
               </Form.Group>
               <Form.Group controlId="FormPassword">
                 <Form.Label>Password</Form.Label>
-                <Form.Control type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.handleChange} />
+                <Form.Control type="password" name="password" placeholder="Password"
+                  value={this.state.password} onChange={this.handleChange}
+                  className={classnames("", {
+                    invalid: errors.password || errors.passwordincorrect
+                  })} />
+                <span className="red-text">
+                  {errors.password}
+                  {errors.passwordincorrect}
+                </span>
               </Form.Group>
               <Button variant="secondary" type="submit">Login</Button>
             </Form>
@@ -107,11 +145,19 @@ class Login extends React.Component {
                 <h2>Organization</h2>
                 <p></p>
                 <Form.Label>Email</Form.Label>
-                <Form.Control type="text" name="orgUser" placeholder="example@email.com" value={this.state.orgUser} onChange={this.handleChange} />
+                <Form.Control type="text" name="orgUser" placeholder="example@email.com"
+                  value={this.state.orgUser} onChange={this.handleChange}
+                  className={classnames("", {
+                    invalid: errors.email || errors.emailnotfound
+                  })} />
               </Form.Group>
               <Form.Group controlId="FormPassword2">
                 <Form.Label>Password</Form.Label>
-                <Form.Control type="password" name="orgPass" placeholder="Password" value={this.state.orgPass} onChange={this.handleChange} />
+                <Form.Control type="password" name="orgPass" placeholder="Password"
+                  value={this.state.orgPass} onChange={this.handleChange}
+                  className={classnames("", {
+                    invalid: errors.password || errors.passwordincorrect
+                  })} />
               </Form.Group>
               <Button variant="secondary" type="submit2">Login</Button>
             </Form>
@@ -123,4 +169,22 @@ class Login extends React.Component {
 
 }
 
-export default Login;
+Login.propTypes = {
+  loginUser: PropTypes.func.isRequired,
+  loginOrg: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(
+  mapStateToProps,
+  {
+    loginUser,
+    loginOrg
+  }
+)(Login);

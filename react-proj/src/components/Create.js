@@ -1,9 +1,15 @@
 import React, { Component } from "react";
-import { Link, Route, Switch } from "react-router-dom";
+import { Link, Route, withRouter, Switch } from "react-router-dom";
 import axios from 'axios';
 // import logo, { ReactComponent } from '../Images/logo.svg';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
+
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { registerUser } from "../actions/authActions";
+import { registerOrg } from "../actions/authActions";
+import classnames from "classnames";
 
 class Create extends React.Component {
 
@@ -16,6 +22,14 @@ class Create extends React.Component {
     orgName: '',
     errors: {}
   };
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({
+        errors: nextProps.errors
+      });
+    }
+  }
 
   // Function which handles the user input 
   // i.e when user inputs the username and password
@@ -47,22 +61,24 @@ class Create extends React.Component {
       name: this.state.name
     };
 
-    // Sending the data from the html form to the server
-    axios({
-      url: '/api/register',
-      method: 'POST',
-      data: payload
-    })
-      .then(() => {
-        console.log('Data has been sent to the server');
-        this.resetUserInputs();
-      })
-      .catch(() => {
-        console.log('Internal server error');
-      });;
+    this.props.registerUser(payload, this.props.history);
+
+    // // Sending the data from the html form to the server
+    // axios({
+    //   url: '/api/register',
+    //   method: 'POST',
+    //   data: payload
+    // })
+    //   .then(() => {
+    //     console.log('Data has been sent to the server');
+    //     this.resetUserInputs();
+    //   })
+    //   .catch(() => {
+    //     console.log('Internal server error');
+    //   });;
   };
 
-  // Function which handles the chnages when the Submit Button is clicked for Organisation
+  // Function which handles the changes when the Submit Button is clicked for Organisation
   submit2 = (event) => {
     event.preventDefault();
 
@@ -73,19 +89,20 @@ class Create extends React.Component {
     };
 
     // Sending the data from the html form to the server
+    this.props.registerOrg(payload, this.props.history);
 
-    axios({
-      url: '/api/registerOrg',
-      method: 'POST',
-      data: payload
-    })
-      .then(() => {
-        console.log('Data has been sent to the server');
-        this.resetUserInputs();
-      })
-      .catch(() => {
-        console.log('Internal server error');
-      });;
+    // axios({
+    //   url: '/api/registerOrg',
+    //   method: 'POST',
+    //   data: payload
+    // })
+    //   .then(() => {
+    //     console.log('Data has been sent to the server');
+    //     this.resetUserInputs();
+    //   })
+    //   .catch(() => {
+    //     console.log('Internal server error');
+    //   });;
   };
 
 
@@ -105,15 +122,28 @@ class Create extends React.Component {
                 <h2>Student</h2>
                 <p></p>
                 <Form.Label>Email</Form.Label>
-                <Form.Control type="text" name="username" placeholder="example@email.com" value={this.state.username} onChange={this.handleChange} error={errors.username} />
+                <Form.Control type="text" name="username" placeholder="example@email.com"
+                  value={this.state.username} onChange={this.handleChange} error={errors.username}
+                  className={classnames("", {
+                    invalid: errors.username
+                  })} />
+                <span className="red-text">{errors.name}</span>
               </Form.Group>
               <Form.Group controlId="FormName">
                 <Form.Label>Name</Form.Label>
-                <Form.Control type="text" name="name" placeholder="John Smith" value={this.state.name} onChange={this.handleChange} error={errors.name} />
+                <Form.Control type="text" name="name" placeholder="John Smith"
+                  value={this.state.name} onChange={this.handleChange} error={errors.name}
+                  className={classnames("", {
+                    invalid: errors.name
+                  })} />
               </Form.Group>
               <Form.Group controlId="FormPassword">
                 <Form.Label>Password</Form.Label>
-                <Form.Control type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.handleChange} error={errors.password} />
+                <Form.Control type="password" name="password" placeholder="Password"
+                  value={this.state.password} onChange={this.handleChange} error={errors.password}
+                  className={classnames("", {
+                    invalid: errors.password
+                  })} />
               </Form.Group>
               <Button variant="secondary" type="submit">Create Account</Button>
             </Form>
@@ -147,4 +177,22 @@ class Create extends React.Component {
 
 }
 
-export default Create;
+Create.propTypes = {
+  registerUser: PropTypes.func.isRequired,
+  registerOrg: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(
+  mapStateToProps,
+  {
+    registerUser,
+    registerOrg
+  }
+)(withRouter(Create));
