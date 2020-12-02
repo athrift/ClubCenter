@@ -10,9 +10,14 @@ Make sure to run #4 in the outmost project folder
 
 5. npm install --save react-router-dom
 6. npm i bcryptjs body-parser concurrently is-empty jsonwebtoken passport passport-jwt validator
+7. npm i -g create-react-app
 
-In react-proj directory
-7. npm i axios classnames jwt-decode react-redux react-router-dom redux redux-thunk
+
+In react-proj (client) directory
+8. npm i axios classnames jwt-decode react-redux react-router-dom redux redux-thunk
+
+In Chrome Browser:
+Extension: Redux DevTools
 
 To run React Website type the following in terminal:<br />
 cd react-proj<br />
@@ -50,3 +55,11 @@ mongoose: used to interact with MongoDB
 passport: used to authenticate requests, which it does through an extensible set of plugins known as strategies
 passport-jwt: passport strategy for authenticating with a JSON Web Token (JWT); lets you authenticate endpoints using a JWT
 validator: used to validate inputs (e.g. check for valid email format, confirming passwords match)
+
+axios: promise based HTTP client for making requests to our backend
+classnames: used for conditional classes in our JSX
+jwt-decode: used to decode our jwt so we can get user data from it
+react-redux: allows us to use Redux with React
+react-router-dom: used for routing purposes
+redux: used to manage state between components (can be used with React or any other view library)
+redux-thunk: middleware for Redux that allows us to directly access the dispatch method to make asynchronous calls from our actions

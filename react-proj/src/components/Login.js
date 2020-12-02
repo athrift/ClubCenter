@@ -1,23 +1,18 @@
 import React, { Component } from "react";
 import { Link, Route, Switch } from "react-router-dom";
 import axios from 'axios';
-import logo, { ReactComponent } from './logo.svg';
-import { Button, Form } from 'react-bootstrap'
+// import logo, { ReactComponent } from './Images/logo.svg';
+import { Container, Row, Col, Button, Form } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-class Create extends React.Component {
+class Login extends React.Component {
 
   state = {
-    username: '',
-    password: '',
-    name: '',
+    username: "",
+    password: "",
     orgUser: '',
-    orgPass: '',
-    orgName: ''
+    orgPass: ''
   };
-
-  // Function which handles the user input 
-  // i.e when user inputs the username and password
 
   handleChange = ({ target }) => {
     const { name, value } = target;
@@ -29,26 +24,23 @@ class Create extends React.Component {
     this.setState({
       username: '',
       password: '',
-      name: '',
       orgUser: '',
       orgPass: '',
-      orgName: ''
     });
   };
 
-  // Function which handles the chnages when the Submit Button is clicked for Student
+  // Function which handles the changes when the Student Login Button is clicked
   submit = (event) => {
     event.preventDefault();
 
     const payload = {
       username: this.state.username,
-      password: this.state.password,
-      name: this.state.name
+      password: this.state.password
     };
 
     // Sending the data from the html form to the server
     axios({
-      url: '/api/register',
+      url: '/api/login',
       method: 'POST',
       data: payload
     })
@@ -61,20 +53,18 @@ class Create extends React.Component {
       });;
   };
 
-  // Function which handles the chnages when the Submit Button is clicked for Organisation
+  // Function which handles the changes when the Submit Button is clicked
   submit2 = (event) => {
     event.preventDefault();
 
     const payload = {
       orgUser: this.state.orgUser,
-      orgPass: this.state.orgPass,
-      orgName: this.state.orgName
+      orgPass: this.state.orgPass
     };
 
     // Sending the data from the html form to the server
-
     axios({
-      url: '/api/registerOrg',
+      url: '/api/loginOrg',
       method: 'POST',
       data: payload
     })
@@ -86,16 +76,14 @@ class Create extends React.Component {
         console.log('Internal server error');
       });;
   };
-
-
 
   render() {
 
     console.log('State: ', this.state);
 
     return (
-      <div className="Create">
-        <header className="Create-header">
+      <div className="Login">
+        <header className="Login-header">
           <div className="Student">
             <Form onSubmit={this.submit}>
               <Form.Group controlId="FormEmail">
@@ -105,15 +93,11 @@ class Create extends React.Component {
 
                 <Form.Control type="text" name="username" placeholder="example@email.com" value={this.state.username} onChange={this.handleChange} />
               </Form.Group>
-              <Form.Group controlId="FormName">
-                <Form.Label>Name</Form.Label>
-                <Form.Control type="text" name="name" placeholder="John Smith" value={this.state.name} onChange={this.handleChange} />
-              </Form.Group>
               <Form.Group controlId="FormPassword">
                 <Form.Label>Password</Form.Label>
                 <Form.Control type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.handleChange} />
               </Form.Group>
-              <Button variant="secondary" type="submit">Create Account</Button>
+              <Button variant="secondary" type="submit">Login</Button>
             </Form>
           </div>
 
@@ -125,19 +109,13 @@ class Create extends React.Component {
                 <Form.Label>Email</Form.Label>
                 <Form.Control type="text" name="orgUser" placeholder="example@email.com" value={this.state.orgUser} onChange={this.handleChange} />
               </Form.Group>
-              <Form.Group controlId="FormName">
-                <Form.Label>Organization Name</Form.Label>
-                <Form.Control type="text" name="orgName" placeholder="After School Club" value={this.state.orgName} onChange={this.handleChange} />
-              </Form.Group>
               <Form.Group controlId="FormPassword2">
                 <Form.Label>Password</Form.Label>
                 <Form.Control type="password" name="orgPass" placeholder="Password" value={this.state.orgPass} onChange={this.handleChange} />
               </Form.Group>
-              <Button variant="secondary" type="submit2">Create Account</Button>
+              <Button variant="secondary" type="submit2">Login</Button>
             </Form>
           </div>
-
-
         </header>
       </div >
     );
@@ -145,4 +123,4 @@ class Create extends React.Component {
 
 }
 
-export default Create;
+export default Login;
