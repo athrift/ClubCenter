@@ -9,7 +9,9 @@ class Login extends React.Component {
 
   state = {
     username: "",
-    password: ""
+    password: "",
+    orgUser: '',
+    orgPass: ''
   };
 
   handleChange = ({ target }) => {
@@ -21,11 +23,13 @@ class Login extends React.Component {
   resetUserInputs = () => {
     this.setState({
       username: '',
-      password: ''
+      password: '',
+      orgUser: '',
+      orgPass: '',
     });
   };
 
-  // Function which handles the changes when the Submit Button is clicked
+  // Function which handles the changes when the Student Login Button is clicked
   submit = (event) => {
     event.preventDefault();
 
@@ -37,6 +41,30 @@ class Login extends React.Component {
     // Sending the data from the html form to the server
     axios({
       url: '/api/login',
+      method: 'POST',
+      data: payload
+    })
+      .then(() => {
+        console.log('Data has been sent to the server');
+        this.resetUserInputs();
+      })
+      .catch(() => {
+        console.log('Internal server error');
+      });;
+  };
+
+  // Function which handles the changes when the Submit Button is clicked
+  submit2 = (event) => {
+    event.preventDefault();
+
+    const payload = {
+      orgUser: this.state.orgUser,
+      orgPass: this.state.orgPass
+    };
+
+    // Sending the data from the html form to the server
+    axios({
+      url: '/api/loginOrg',
       method: 'POST',
       data: payload
     })
@@ -62,6 +90,7 @@ class Login extends React.Component {
                 <h2>Student</h2>
                 <p></p>
                 <Form.Label>Email</Form.Label>
+
                 <Form.Control type="text" name="username" placeholder="example@email.com" value={this.state.username} onChange={this.handleChange} />
               </Form.Group>
               <Form.Group controlId="FormPassword">
@@ -69,6 +98,22 @@ class Login extends React.Component {
                 <Form.Control type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.handleChange} />
               </Form.Group>
               <Button variant="secondary" type="submit">Login</Button>
+            </Form>
+          </div>
+
+          <div className="Org">
+            <Form onSubmit={this.submit2}>
+              <Form.Group controlId="FormEmail2">
+                <h2>Organization</h2>
+                <p></p>
+                <Form.Label>Email</Form.Label>
+                <Form.Control type="text" name="orgUser" placeholder="example@email.com" value={this.state.orgUser} onChange={this.handleChange} />
+              </Form.Group>
+              <Form.Group controlId="FormPassword2">
+                <Form.Label>Password</Form.Label>
+                <Form.Control type="password" name="orgPass" placeholder="Password" value={this.state.orgPass} onChange={this.handleChange} />
+              </Form.Group>
+              <Button variant="secondary" type="submit2">Login</Button>
             </Form>
           </div>
         </header>

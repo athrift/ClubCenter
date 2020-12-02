@@ -37,8 +37,7 @@ class App extends React.Component {
                 <img src={image} alt="ClubCenter" class="mainLogo" />
               </Link>
               <Link to="/Create">Create Account</Link>
-              <Link to="/Login">Student Login</Link>
-              <Link to="/LoginOrg">Organisation Login</Link>
+              <Link to="/Login">Login</Link>
             </li>
           </ul>
           <Route exact={true} path="/" component={Home} className="Home" />

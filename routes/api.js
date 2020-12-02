@@ -12,6 +12,7 @@ const Organization = require('../models/Organization');
 const validateRegisterInput = require("../validation/register");
 const validateOrgRegisterInput = require("../validation/org_register");
 const validateLoginInput = require("../validation/login");
+const validateOrgLoginInput = require("../validation/org_login");
 
 // Routes
 
@@ -64,7 +65,7 @@ router.post("/registerOrg", (req, res) => {
         console.log("Invalid data");
         return res.status(400).json(errors);
     }
-    Student.findOne({ orgUser: data.orgUser }).then(user => {
+    Organization.findOne({ orgUser: data.orgUser }).then(user => {
         if (user) {
             console.log("Organization already exists");
             return res.status(400).json({ email: "Organization Email already exists" });
@@ -90,7 +91,7 @@ router.post("/registerOrg", (req, res) => {
 });
 
 // @route POST api/users/login
-// @desc Login user and return JWT token
+// @desc Login Student and return JWT token
 // @access Public
 router.post("/login", (req, res) => {
     // Form validation
@@ -114,6 +115,60 @@ router.post("/login", (req, res) => {
         bcrypt.compare(password, user.password).then(isMatch => {
             if (isMatch) {
                 console.log("User Logged In");
+                // User matched
+                // Create JWT Payload
+                const payload = {
+                    id: user.id,
+                    name: user.name
+                };
+                // Sign token
+                jwt.sign(
+                    payload,
+                    keys.secretOrKey,
+                    {
+                        expiresIn: 31556926 // 1 year in seconds
+                    },
+                    (err, token) => {
+                        res.json({
+                            success: true,
+                            token: "Bearer " + token
+                        });
+                    }
+                );
+            } else {
+                return res
+                    .status(400)
+                    .json({ passwordincorrect: "Password entered was incorrect!" });
+            }
+        });
+    });
+});
+
+// @route POST api/users/loginOrg
+// @desc Login Organisation and return JWT token
+// @access Public
+router.post("/loginOrg", (req, res) => {
+    // Form validation
+    const data = req.body;
+    const { errors, isValid } = validateOrgLoginInput(data);
+    // Check validation
+    if (!isValid) {
+        console.log("Invalid data");
+        return res.status(400).json(errors);
+    }
+    const orgUser = data.orgUser;
+    const orgPass = data.orgPass;
+    // Find user by email
+    Organization.findOne({ orgUser }).then(user => {
+        // Check if user exists
+        if (!user) {
+            console.log("Organization Username does not exist");
+            return res.status(404).json({ emailnotfound: "Organization Username does not exist!" });
+        }
+        // Check password
+        bcrypt.compare(orgPass, user.orgPass).then(isMatch => {
+            if (isMatch) {
+                console.log("Organization Logged In");
                 // User matched
                 // Create JWT Payload
                 const payload = {

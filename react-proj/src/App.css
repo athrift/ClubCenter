@@ -60,10 +60,12 @@
 .Student {
   padding: 90px;
   background-color: #414347;
+  display: inline-block;
 }
 .Org {
  padding: 90px;
  background-color: #4f5052;
+ display: inline-block;
 }
 .App-link {
   color: #61dafb;
