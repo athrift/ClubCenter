@@ -11,7 +11,8 @@ import image from "./Images/clubcenter.png";
 // Imports to keep the User Logged In
 import jwt_decode from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
-import { setCurrentUser, logoutUser } from "./actions/authActions";
+import { setCurrentUser, logoutUser, isAuthenticated} from "./actions/authActions";
+
 
 //Add external pages
 
@@ -19,6 +20,9 @@ import Create from "./components/Create";
 import Login from "./components/Login";
 import PrivateRoute from "./components/PrivateRoute";
 import Dashboard from "./components/Dashboard";
+import Post from "./components/Post";
+import NavigationBar from "./components/NavigationBar";
+
 
 // Redux Management
 import { Provider } from "react-redux";
@@ -34,6 +38,7 @@ if (localStorage.jwtToken) {
   const decoded = jwt_decode(token);
   // Set user and isAuthenticated
   store.dispatch(setCurrentUser(decoded));
+
 
   // Check for expired token
   const currentTime = Date.now() / 1000; // to get in milliseconds
@@ -52,17 +57,40 @@ const Home = () => (
   </div>
 );
 
-class App extends React.Component {
 
+
+
+class App extends React.Component {
+  
+
+  constructor(props) {
+    super(props);
+    this.state = { isAuthenticated: false };
+   
+  }
+
+  // login () {
+  //   this.setState({ isAuthenticated: true });
+  // }
+
+  // logout = () => {
+  //   this.setState({ isAuthenticated: false });
+  // }
+
+  
   render() {
+   
+    // const { isAuthenticated } = this.state;
 
     console.log("Code rendering App.js\n");
-
     console.log('State: ', this.state);
     return (
       <Provider store={store}>
         <div className="App">
           <header className="App-header">
+          {/* Tried to implement navBar switch but rendering isAuthenticated not working,
+           to see you can uncomment the line below and put in true or false values for isAuthenticated */}
+          {/* <NavigationBar isLoggedin={isAuthenticated} logout={this.logoutUser}/> */}
             <ul className="nav navbar-nav">
               <li>
                 <Link to="/">
@@ -77,6 +105,7 @@ class App extends React.Component {
             <Route exact={true} path="/Login" component={Login} className="Login" />
             <Switch>
               <PrivateRoute exact path="/Dashboard" component={Dashboard} className="Dashboard" />
+              <PrivateRoute exact path="/Post" component={Post} className="Post" />
             </Switch>
           </header>
         </div>
