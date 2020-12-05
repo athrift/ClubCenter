@@ -17,6 +17,7 @@ class Post extends Component {
     time: '',
     date: '',
     place: '',
+    posts: [],
     errors: {}
   };
 
@@ -24,6 +25,24 @@ class Post extends Component {
     const { name, value } = target;
     this.setState({ [name]: value });
   };
+
+  componentDidMount = () => {
+    this.getPost();
+  };
+
+  getPost = () => {
+    axios.get('/api')
+    .then((response) => {
+      const data = response.data;
+      this.setState({posts: data})
+      console.log('Data has been recieved');
+      
+    })
+    .catch(() => {
+      console.log('Internal server error');
+    });;
+
+  }
 
   resetUserInputs = () => {
     this.setState({
@@ -58,10 +77,13 @@ class Post extends Component {
       .then(() => {
         console.log('Data has been sent to the server');
         this.resetUserInputs();
+        this.getPost();
       })
       .catch(() => {
         console.log('Internal server error');
       });;
+
+      this.props.history.push("/Dashboard");
   };
 
 
@@ -69,6 +91,18 @@ class Post extends Component {
     this.props.history.push("/Dashboard");
        
   };
+
+  displayPost = (posts) => {
+    if(!posts.length) return null;
+
+    return posts.map((post, index) =>(
+      <div key={index}>
+        <h3>{post.organization}</h3>
+        <h3>{post.headline}</h3>
+      </div>
+    ));
+  };
+
 
     render() {
       const { errors } = this.state;
@@ -123,17 +157,21 @@ class Post extends Component {
 
               <Button variant="secondary" type="submit">Post</Button>
             </Form>
-          </div>
 
+            
+          </div>
 
           <div className="cancel">
             <Form onSubmit={this.cancel}>
               <Button variant="secondary" type="submit">Cancel</Button>
             </Form>
           </div>
-                   
-                </header>
-            </div >
+
+          {/* <div className="eventPost">
+              {this.displayPost(this.state.posts)}
+            </div> */}
+          </header>
+          </div >
         );
     }
 }
