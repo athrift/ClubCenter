@@ -7,12 +7,13 @@ const keys = require("../config/keys");
 const BlogPost = require('../models/blogPost');
 const Student = require('../models/Student');
 const Organization = require('../models/Organization');
-
+const Event = require('../models/Event');
 // Load input validation
 const validateRegisterInput = require("../validation/register");
 const validateOrgRegisterInput = require("../validation/org_register");
 const validateLoginInput = require("../validation/login");
 const validateOrgLoginInput = require("../validation/org_login");
+const validateEventInput = require("../validation/event");
 
 // Routes
 
@@ -89,6 +90,56 @@ router.post("/registerOrg", (req, res) => {
         }
     });
 });
+
+// @route POST api/registerEvent
+// @desc Register new Event
+// @access Public
+
+router.get('/', (req, res) => {
+
+
+    Event.find({})
+    .then((data) => {
+        console.log('Data: ', data);
+        res.json(data);
+    })
+    .catch((error) => {
+        console.log('error: ', daerrorta);
+    });
+
+});
+
+
+router.post("/registerEvent", (req, res) => {
+    
+    // Form validation
+    // const { errors, isValid } = validateOrgRegisterInput(req.body);
+    // // Check validation
+    // if (!isValid) {
+    //     console.log("Invalid data");
+    //     return res.status(400).json(errors);
+    // }
+    
+    console.log('Body: ', req.body)
+
+    const data = req.body;
+
+    const newEvent = new Event(data);
+
+    newEvent.save((error) => {
+        if (error) {
+            res.status(500).json({ msg: 'Sorry, internal server errors' });
+            return;
+        }
+        
+        return res.json({
+            msg: 'Your data has been saved!'
+        });
+    });
+});
+
+
+
 
 // @route POST api/users/login
 // @desc Login Student and return JWT token
