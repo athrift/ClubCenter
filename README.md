@@ -35,7 +35,7 @@ Storing the various data models in this folder
 Database:
 Hosted on MongoDb 
 Username: imahadal@purdue.edu
-Password: cs348-clubcenter
+Password: cs348newpassword
 
 Ports:
 Server is running on 8080
