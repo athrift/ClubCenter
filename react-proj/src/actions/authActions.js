@@ -14,7 +14,7 @@ import { propTypes } from "react-bootstrap/esm/Image";
 export const registerUser = (userData, history) => dispatch => {
     axios
         .post("/api/register", userData)
-        .then(res => history.push("/")) // re-direct to Homepage on successful register
+        .then(res => history.push("/Dashboard")) // re-direct to Homepage on successful register
         .catch(err =>
             dispatch({
                 type: GET_ERRORS,
@@ -27,7 +27,7 @@ export const registerUser = (userData, history) => dispatch => {
 export const registerOrg = (orgData, history) => dispatch => {
     axios
         .post("/api/registerOrg", orgData)
-        .then(res => history.push("/")) // re-direct to Homepage on successful register
+        .then(res => history.push("/Dashboard")) // re-direct to Homepage on successful register
         .catch(err =>
             dispatch({
                 type: GET_ERRORS,

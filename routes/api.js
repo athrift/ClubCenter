@@ -18,7 +18,7 @@ const validateEventInput = require("../validation/event");
 
 var ObjectId = require('mongodb').ObjectID;
 
-var currentUser = {
+global.currentUser = {
     id: "",
     username: "",
     name: "",
@@ -131,7 +131,7 @@ router.post('/deleteUser', (req, res) => {
         });
     }
     else {
-        Oragnization.deleteOne({ orgUser: currentUser.username }).then(function () {
+        Organization.deleteOne({ orgUser: currentUser.username }).then(function () {
             console.log("Current User Data Deleted"); // Success
         }).catch(function (error) {
             console.log(error); // Failure 
@@ -261,15 +261,13 @@ router.post("/loginOrg", (req, res) => {
                 // Create JWT Payload
                 const payload = {
                     id: user.id,
-                    name: user.name
+                    name: user.orgName
                 };
 
-                global.currentUser = {
-                    id: user.id,
-                    username: user.username,
-                    password: user.password,
-                    type: "Organization"
-                };
+                currentUser.id = user.id;
+                currentUser.username = user.orgUser;
+                currentUser.name = user.orgName;
+                currentUser.type = "Organization";
 
                 // Sign token
                 jwt.sign(
