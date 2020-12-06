@@ -7,14 +7,14 @@ import {
     SET_CURRENT_USER,
     USER_LOADING
 } from "./types";
-
+import { propTypes } from "react-bootstrap/esm/Image";
 
 
 // Register User
 export const registerUser = (userData, history) => dispatch => {
     axios
         .post("/api/register", userData)
-        .then(res => history.push("/")) // re-direct to Homepage on successful register
+        .then(res => history.push("/Dashboard")) // re-direct to Homepage on successful register
         .catch(err =>
             dispatch({
                 type: GET_ERRORS,
@@ -27,7 +27,7 @@ export const registerUser = (userData, history) => dispatch => {
 export const registerOrg = (orgData, history) => dispatch => {
     axios
         .post("/api/registerOrg", orgData)
-        .then(res => history.push("/")) // re-direct to Homepage on successful register
+        .then(res => history.push("/Dashboard")) // re-direct to Homepage on successful register
         .catch(err =>
             dispatch({
                 type: GET_ERRORS,
@@ -84,9 +84,10 @@ export const loginOrg = orgData => dispatch => {
         );
 };
 
+
 // Set logged in user
 export const setCurrentUser = decoded => {
-  
+
     return {
         type: SET_CURRENT_USER,
         payload: decoded
@@ -109,7 +110,7 @@ export const logoutUser = () => dispatch => {
     // Set current user to empty object {} 
     dispatch(setCurrentUser({}));
     //set isAuthenticated to false
-    
+
 };
 
 

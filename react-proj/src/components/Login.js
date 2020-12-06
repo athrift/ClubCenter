@@ -38,6 +38,8 @@ class Login extends React.Component {
   //   if (this.props.auth.isAuthenticated) {
   //     this.props.history.push("/Dashboard");
   //   }
+
+  //   // Setting the current user global var 
   // }
 
   handleChange = ({ target }) => {

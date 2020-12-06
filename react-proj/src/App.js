@@ -11,7 +11,7 @@ import image from "./Images/clubcenter.png";
 // Imports to keep the User Logged In
 import jwt_decode from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
-import { setCurrentUser, logoutUser, isAuthenticated} from "./actions/authActions";
+import { setCurrentUser, logoutUser, isAuthenticated } from "./actions/authActions";
 
 
 //Add external pages
@@ -39,6 +39,9 @@ if (localStorage.jwtToken) {
   // Set user and isAuthenticated
   store.dispatch(setCurrentUser(decoded));
 
+  console.log("DECODED");
+  console.log(decoded);
+
 
   // Check for expired token
   const currentTime = Date.now() / 1000; // to get in milliseconds
@@ -61,25 +64,26 @@ const Home = () => (
 
 
 class App extends React.Component {
-  
+
 
   constructor(props) {
     super(props);
     this.state = { isAuthenticated: false };
-   
+
   }
 
-  // login () {
-  //   this.setState({ isAuthenticated: true });
-  // }
+  login() {
+    this.setState({ isAuthenticated: true });
+  }
 
-  // logout = () => {
-  //   this.setState({ isAuthenticated: false });
-  // }
+  logout = () => {
+    this.setState({ isAuthenticated: false });
+  }
 
-  
+
+
   render() {
-   
+
     // const { isAuthenticated } = this.state;
 
     console.log("Code rendering App.js\n");
@@ -88,9 +92,9 @@ class App extends React.Component {
       <Provider store={store}>
         <div className="App">
           <header className="App-header">
-          {/* Tried to implement navBar switch but rendering isAuthenticated not working,
+            {/* Tried to implement navBar switch but rendering isAuthenticated not working,
            to see you can uncomment the line below and put in true or false values for isAuthenticated */}
-          {/* <NavigationBar isLoggedin={isAuthenticated} logout={this.logoutUser}/> */}
+            {/* <NavigationBar isLoggedin={isAuthenticated} logout={this.logoutUser}/> */}
             <ul className="nav navbar-nav">
               <li>
                 <Link to="/">

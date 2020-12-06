@@ -8,12 +8,22 @@ const BlogPost = require('../models/blogPost');
 const Student = require('../models/Student');
 const Organization = require('../models/Organization');
 const Event = require('../models/Event');
+
 // Load input validation
 const validateRegisterInput = require("../validation/register");
 const validateOrgRegisterInput = require("../validation/org_register");
 const validateLoginInput = require("../validation/login");
 const validateOrgLoginInput = require("../validation/org_login");
 const validateEventInput = require("../validation/event");
+
+var ObjectId = require('mongodb').ObjectID;
+
+global.currentUser = {
+    id: "",
+    username: "",
+    name: "",
+    type: ""
+}
 
 // Routes
 
@@ -91,27 +101,48 @@ router.post("/registerOrg", (req, res) => {
     });
 });
 
-// @route POST api/registerEvent
-// @desc Register new Event
+// @route POST api/
+// @desc Get all the Events 
 // @access Public
 
 router.get('/', (req, res) => {
-
-
     Event.find({})
-    .then((data) => {
-        console.log('Data: ', data);
-        res.json(data);
-    })
-    .catch((error) => {
-        console.log('error: ', daerrorta);
-    });
+        .then((data) => {
+            console.log('Data: ', data);
+            res.json(data);
+        })
+        .catch((error) => {
+            console.log('error: ', daerrorta);
+        });
+
+});
+
+// @route POST api/deleteUser
+// @desc Delete the account with the current logged in user 
+// @access Public
+
+router.post('/deleteUser', (req, res) => {
+    console.log("Current User", currentUser);
+    if (currentUser.type == "Student") {
+        Student.deleteOne({ username: currentUser.username }).then(function () {
+            console.log("Current User Data Deleted"); // Success
+        }).catch(function (error) {
+            console.log(error); // Failure 
+        });
+    }
+    else {
+        Organization.deleteOne({ orgUser: currentUser.username }).then(function () {
+            console.log("Current User Data Deleted"); // Success
+        }).catch(function (error) {
+            console.log(error); // Failure 
+        });
+    }
 
 });
 
 
 router.post("/registerEvent", (req, res) => {
-    
+
     // Form validation
     // const { errors, isValid } = validateOrgRegisterInput(req.body);
     // // Check validation
@@ -119,7 +150,7 @@ router.post("/registerEvent", (req, res) => {
     //     console.log("Invalid data");
     //     return res.status(400).json(errors);
     // }
-    
+
     console.log('Body: ', req.body)
 
     const data = req.body;
@@ -131,7 +162,7 @@ router.post("/registerEvent", (req, res) => {
             res.status(500).json({ msg: 'Sorry, internal server errors' });
             return;
         }
-        
+
         return res.json({
             msg: 'Your data has been saved!'
         });
@@ -172,6 +203,12 @@ router.post("/login", (req, res) => {
                     id: user.id,
                     name: user.name
                 };
+
+                currentUser.id = user.id;
+                currentUser.username = user.username;
+                currentUser.name = user.name;
+                currentUser.type = "Student";
+
                 // Sign token
                 jwt.sign(
                     payload,
@@ -224,8 +261,14 @@ router.post("/loginOrg", (req, res) => {
                 // Create JWT Payload
                 const payload = {
                     id: user.id,
-                    name: user.name
+                    name: user.orgName
                 };
+
+                currentUser.id = user.id;
+                currentUser.username = user.orgUser;
+                currentUser.name = user.orgName;
+                currentUser.type = "Organization";
+
                 // Sign token
                 jwt.sign(
                     payload,
