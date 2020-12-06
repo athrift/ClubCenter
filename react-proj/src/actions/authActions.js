@@ -7,7 +7,7 @@ import {
     SET_CURRENT_USER,
     USER_LOADING
 } from "./types";
-
+import { propTypes } from "react-bootstrap/esm/Image";
 
 
 // Register User
@@ -84,9 +84,10 @@ export const loginOrg = orgData => dispatch => {
         );
 };
 
+
 // Set logged in user
 export const setCurrentUser = decoded => {
-  
+
     return {
         type: SET_CURRENT_USER,
         payload: decoded
@@ -109,7 +110,7 @@ export const logoutUser = () => dispatch => {
     // Set current user to empty object {} 
     dispatch(setCurrentUser({}));
     //set isAuthenticated to false
-    
+
 };
 
 
