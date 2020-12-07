@@ -45,6 +45,7 @@ export const loginUser = userData => dispatch => {
             // Set token to localStorage
             const { token } = res.data;
             localStorage.setItem("jwtToken", token);
+            localStorage.setItem("Type", "Student");
             // Set token to Auth header
             setAuthToken(token);
             // Decode token to get user data
@@ -69,6 +70,7 @@ export const loginOrg = orgData => dispatch => {
             // Set token to localStorage
             const { token } = res.data;
             localStorage.setItem("jwtToken", token);
+            localStorage.setItem("Type", "Organization");
             // Set token to Auth header
             setAuthToken(token);
             // Decode token to get user data
@@ -83,6 +85,32 @@ export const loginOrg = orgData => dispatch => {
             })
         );
 };
+
+// Student Update - Update the current user 
+export const updateUser = (userData, history) => dispatch => {
+    axios
+        .post("/api/updateUser", userData)
+        .then(res => history.push("/Dashboard")) // re-direct to Homepage on successful update
+        .catch(err =>
+            dispatch({
+                type: GET_ERRORS,
+                payload: err.response.data
+            })
+        );
+}
+
+// Organization Update - Update the current orgr 
+export const updateOrg = (orgData, history) => dispatch => {
+    axios
+        .post("/api/updateOrg", orgData)
+        .then(res => history.push("/Dashboard")) // re-direct to Homepage on successful update
+        .catch(err =>
+            dispatch({
+                type: GET_ERRORS,
+                payload: err.response.data
+            })
+        );
+}
 
 
 // Set logged in user

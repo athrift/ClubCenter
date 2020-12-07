@@ -4,12 +4,13 @@ import { connect } from "react-redux";
 import { logoutUser } from "../actions/authActions";
 import { Link, Route, withRouter, Switch } from "react-router-dom";
 import axios from 'axios';
-import { Container, Row, Col, Button, Form, Card } from 'react-bootstrap'
+import { Container, Row, Col, Button, Form, Card } from 'react-bootstrap';
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import Post from "./Post";
 import Login from "./Login";
+import Update from "./Update";
 
 class Dashboard extends Component {
     state = {
@@ -36,9 +37,6 @@ class Dashboard extends Component {
     deleteUser = e => {
         // Sending the data from the html form to the server
         e.preventDefault();
-        const { user } = this.props.auth;
-        console.log(this.props);
-
         axios({
             url: '/api/deleteUser',
             method: 'POST',
@@ -84,14 +82,16 @@ class Dashboard extends Component {
         this.props.logoutUser();
     };
 
+    updateUser = e => {
+        this.props.history.push("/Update");
+    };
+
 
     newPost = e => {
         this.props.history.push("/Post");
     };
     render() {
         const { user } = this.props.auth;
-        console.log("Current User\n")
-        console.log(user)
 
         return (
             <div className="Dashboard">
@@ -107,6 +107,11 @@ class Dashboard extends Component {
                                 <Route exact={true} path="/Post" component={Post} className="Post" />
                                 </Button> */}
 
+                            </Form>
+                        </div>
+                        <div className="updateUser" >
+                            <Form onSubmit={this.updateUser}>
+                                <Button variant="secondary" type="submit">Update Account</Button>
                             </Form>
                         </div>
                         <div className="logout" >
