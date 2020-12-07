@@ -87,13 +87,29 @@ export const loginOrg = orgData => dispatch => {
 };
 
 // Student Update - Update the current user 
-export const updateUser = userData => dispatch => {
-
+export const updateUser = (userData, history) => dispatch => {
+    axios
+        .post("/api/updateUser", userData)
+        .then(res => history.push("/Dashboard")) // re-direct to Homepage on successful update
+        .catch(err =>
+            dispatch({
+                type: GET_ERRORS,
+                payload: err.response.data
+            })
+        );
 }
 
-// Organization Update - Update the current org
-export const updateOrg = orgData => dispatch => {
-
+// Organization Update - Update the current orgr 
+export const updateOrg = (orgData, history) => dispatch => {
+    axios
+        .post("/api/updateUser", orgData)
+        .then(res => history.push("/Dashboard")) // re-direct to Homepage on successful update
+        .catch(err =>
+            dispatch({
+                type: GET_ERRORS,
+                payload: err.response.data
+            })
+        );
 }
 
 

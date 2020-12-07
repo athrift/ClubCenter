@@ -53,7 +53,7 @@ class Update extends React.Component {
     };
 
     // Function which handles the changes when the Submit Button is clicked for Student
-    submit = (event) => {
+    updateStudent = (event) => {
         event.preventDefault();
         const payload = {
             username: this.state.username,
@@ -64,7 +64,7 @@ class Update extends React.Component {
         this.props.updateUser(payload);
     };
 
-    submit2 = (event) => {
+    updateOrg = (event) => {
         event.preventDefault();
 
         const payload = {

@@ -20,6 +20,7 @@ global.currentUser = {
     id: "",
     username: "",
     name: "",
+    password: "",
     type: ""
 }
 
@@ -131,6 +132,7 @@ router.post('/deleteUser', (req, res) => {
     else {
         Organization.deleteOne({ orgUser: currentUser.username }).then(function () {
             console.log("Current User Data Deleted"); // Success
+            console.log("New User Data: ")
         }).catch(function (error) {
             console.log(error); // Failure 
         });
@@ -204,6 +206,7 @@ router.post("/login", (req, res) => {
 
                 currentUser.id = user.id;
                 currentUser.username = user.username;
+                currentUser.password = user.password;
                 currentUser.name = user.name;
                 currentUser.type = "Student";
 
@@ -264,6 +267,7 @@ router.post("/loginOrg", (req, res) => {
 
                 currentUser.id = user.id;
                 currentUser.username = user.orgUser;
+                currentUser.password = user.orgPass;
                 currentUser.name = user.orgName;
                 currentUser.type = "Organization";
 
@@ -289,5 +293,74 @@ router.post("/loginOrg", (req, res) => {
         });
     });
 });
+
+// @route POST api/updateUser
+// @desc update the current user details 
+// @access Public
+router.post("/updateUser", (req, res) => {
+    const data = req.body;
+
+    console.log("Updating the current Student");
+    console.log("User: ", currentUser);
+    console.log("Data: ", data);
+
+    if (data.name == "") {
+        data.name = currentUser.name;
+    }
+
+    if (data.username == "") {
+        data.username = currentUser.username;
+    }
+
+    var temp = "";
+    if (data.password == "") {
+        data.password = currentUser.password;
+    }
+    else {
+        // Hash password before saving in database
+        bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(data.password, salt, (err, hash) => {
+                if (err) throw err;
+                data.password = hash;
+
+                // Query to update the current user
+                Student.updateOne({ username: currentUser.username },
+                    { "$set": { password: data.password } })
+                    .then(function () {
+                        console.log("Current User Updated"); // Success
+                    }).catch(function (error) {
+                        console.log(error); // Failure 
+                    });
+            });
+        });
+    }
+    // Query to update the current user
+    Student.updateOne({ username: currentUser.username },
+        { "$set": { name: data.name, username: data.username } })
+        .then(function () {
+            console.log("Current User Updated"); // Success
+        }).catch(function (error) {
+            console.log(error); // Failure 
+        });
+
+
+});
+
+// const newStudent = new Student({
+//     name: data.name,
+//     username: data.username,
+//     password: data.password
+// });
+// // Hash password before saving in database
+// bcrypt.genSalt(10, (err, salt) => {
+//     bcrypt.hash(newStudent.password, salt, (err, hash) => {
+//         if (err) throw err;
+//         newStudent.password = hash;
+//         newStudent
+//             .save()
+//             .then(user => res.json(user))
+//             .catch(err => console.log(err));
+//     });
+// });
 
 module.exports = router;
