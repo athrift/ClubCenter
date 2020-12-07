@@ -107,7 +107,7 @@ router.post("/registerOrg", (req, res) => {
 router.get('/', (req, res) => {
     Event.find({})
         .then((data) => {
-            console.log('Data: ', data);
+            // console.log('Data: ', data);
             res.json(data);
         })
         .catch((error) => {
@@ -151,7 +151,7 @@ router.post("/registerEvent", (req, res) => {
     //     return res.status(400).json(errors);
     // }
 
-    console.log('Body: ', req.body)
+    // console.log('Body: ', req.body)
 
     const data = req.body;
 
@@ -312,7 +312,6 @@ router.post("/updateUser", (req, res) => {
         data.username = currentUser.username;
     }
 
-    var temp = "";
     if (data.password == "") {
         data.password = currentUser.password;
     }
@@ -322,6 +321,7 @@ router.post("/updateUser", (req, res) => {
             bcrypt.hash(data.password, salt, (err, hash) => {
                 if (err) throw err;
                 data.password = hash;
+                currentUser.password = data.password;
 
                 // Query to update the current user
                 Student.updateOne({ username: currentUser.username },
@@ -343,24 +343,8 @@ router.post("/updateUser", (req, res) => {
             console.log(error); // Failure 
         });
 
-
+    currentUser.username = data.username;
+    currentUser.name = data.name;
 });
-
-// const newStudent = new Student({
-//     name: data.name,
-//     username: data.username,
-//     password: data.password
-// });
-// // Hash password before saving in database
-// bcrypt.genSalt(10, (err, salt) => {
-//     bcrypt.hash(newStudent.password, salt, (err, hash) => {
-//         if (err) throw err;
-//         newStudent.password = hash;
-//         newStudent
-//             .save()
-//             .then(user => res.json(user))
-//             .catch(err => console.log(err));
-//     });
-// });
 
 module.exports = router;

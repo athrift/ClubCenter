@@ -62,6 +62,9 @@ class Update extends React.Component {
         };
 
         this.props.updateUser(payload);
+
+        // Redirect 
+        this.props.history.push("/Dashboard");
     };
 
     updateOrg = (event) => {

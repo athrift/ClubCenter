@@ -10,6 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 import Post from "./Post";
 import Login from "./Login";
+import Update from "./Update";
 
 class Dashboard extends Component {
     state = {
