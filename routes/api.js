@@ -347,4 +347,57 @@ router.post("/updateUser", (req, res) => {
     currentUser.name = data.name;
 });
 
+// @route POST api/updateOrg
+// @desc update the current organization details 
+// @access Public
+router.post("/updateOrg", (req, res) => {
+    const data = req.body;
+
+    console.log("Updating the current Organization");
+
+    if (data.orgName == "") {
+        data.orgName = currentUser.name;
+    }
+
+    if (data.orgUser == "") {
+        data.orgUser = currentUser.username;
+    }
+
+    if (data.orgPass == "") {
+        data.orgPass = currentUser.password;
+    }
+    else {
+        // Hash password before saving in database
+        bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(data.orgPass, salt, (err, hash) => {
+                if (err) throw err;
+                data.orgPass = hash;
+                currentUser.password = data.orgPass
+
+                // Query to update the current user
+                Organization.updateOne({ username: currentUser.username },
+                    { "$set": { password: data.orgPass } })
+                    .then(function () {
+                        console.log("Current Organization Updated"); // Success
+                    }).catch(function (error) {
+                        console.log(error); // Failure 
+                    });
+            });
+        });
+    }
+    console.log("User: ", currentUser);
+    console.log("Data: ", data);
+    // Query to update the current user
+    Organization.updateOne({ orgUser: currentUser.username },
+        { "$set": { orgName: data.orgName, orgUser: data.orgUser } })
+        .then(function () {
+            console.log("Current Organization Updated"); // Success
+        }).catch(function (error) {
+            console.log(error); // Failure 
+        });
+
+    currentUser.username = data.orgUser;
+    currentUser.name = data.orgName;
+});
+
 module.exports = router;

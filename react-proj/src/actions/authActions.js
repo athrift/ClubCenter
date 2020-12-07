@@ -102,7 +102,7 @@ export const updateUser = (userData, history) => dispatch => {
 // Organization Update - Update the current orgr 
 export const updateOrg = (orgData, history) => dispatch => {
     axios
-        .post("/api/updateUser", orgData)
+        .post("/api/updateOrg", orgData)
         .then(res => history.push("/Dashboard")) // re-direct to Homepage on successful update
         .catch(err =>
             dispatch({
