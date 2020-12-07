@@ -18,6 +18,7 @@ import { setCurrentUser, logoutUser, isAuthenticated } from "./actions/authActio
 
 import Create from "./components/Create";
 import Login from "./components/Login";
+import Update from "./components/Update";
 import PrivateRoute from "./components/PrivateRoute";
 import Dashboard from "./components/Dashboard";
 import Post from "./components/Post";
@@ -49,7 +50,7 @@ if (localStorage.jwtToken) {
     // Logout user
     store.dispatch(logoutUser());
     // Redirect to login
-    window.location.href = "./login";
+    window.location.href = "./Login";
   }
 }
 //Add internal pages
@@ -110,6 +111,7 @@ class App extends React.Component {
             <Switch>
               <PrivateRoute exact path="/Dashboard" component={Dashboard} className="Dashboard" />
               <PrivateRoute exact path="/Post" component={Post} className="Post" />
+              <PrivateRoute exact path="/Update" component={Update} className="Update" />
             </Switch>
           </header>
         </div>

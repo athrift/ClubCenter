@@ -45,6 +45,7 @@ export const loginUser = userData => dispatch => {
             // Set token to localStorage
             const { token } = res.data;
             localStorage.setItem("jwtToken", token);
+            localStorage.setItem("Type", "Student");
             // Set token to Auth header
             setAuthToken(token);
             // Decode token to get user data
@@ -69,6 +70,7 @@ export const loginOrg = orgData => dispatch => {
             // Set token to localStorage
             const { token } = res.data;
             localStorage.setItem("jwtToken", token);
+            localStorage.setItem("Type", "Organization");
             // Set token to Auth header
             setAuthToken(token);
             // Decode token to get user data
@@ -83,6 +85,16 @@ export const loginOrg = orgData => dispatch => {
             })
         );
 };
+
+// Student Update - Update the current user 
+export const updateUser = userData => dispatch => {
+
+}
+
+// Organization Update - Update the current org
+export const updateOrg = orgData => dispatch => {
+
+}
 
 
 // Set logged in user

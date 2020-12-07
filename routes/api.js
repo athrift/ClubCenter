@@ -16,8 +16,6 @@ const validateLoginInput = require("../validation/login");
 const validateOrgLoginInput = require("../validation/org_login");
 const validateEventInput = require("../validation/event");
 
-var ObjectId = require('mongodb').ObjectID;
-
 global.currentUser = {
     id: "",
     username: "",
