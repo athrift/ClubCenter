@@ -142,6 +142,187 @@ router.post('/deleteUser', (req, res) => {
 
 });
 
+//#region All Events Report
+router.get("/allEventsReport1", (req, res) => {
+    Event.find({}).count()
+    .then((data) => {
+        console.log('Data: ', data);
+        res.json(data);
+    })
+    .catch((error) => {
+        console.log('error: ', daerrorta);
+    });
+});
+router.get("/allEventsReport2", (req, res) => {
+    Event.find({}).count()
+    .then((data) => {
+        console.log('Data: ', data);
+        res.json(data);
+    })
+    .catch((error) => {
+        console.log('error: ', daerrorta);
+    });
+});
+router.get("/allEventsReport3", (req, res) => {
+    Event.find({}).count()
+    .then((data) => {
+        console.log('Data: ', data);
+        res.json(data);
+    })
+    .catch((error) => {
+        console.log('error: ', daerrorta);
+    });
+});
+router.get("/allEventsReport4", (req, res) => {
+    Event.find({}).count()
+    .then((data) => {
+        console.log('Data: ', data);
+        res.json(data);
+    })
+    .catch((error) => {
+        console.log('error: ', daerrorta);
+    });
+});
+router.get("/allEventsReport5", (req, res) => {
+    Event.find({}).count()
+    .then((data) => {
+        console.log('Data: ', data);
+        res.json(data);
+    })
+    .catch((error) => {
+        console.log('error: ', daerrorta);
+    });
+});
+//#endregion
+
+//#region Event Report
+router.get("/eventReport1", (req, res) => {
+    Event.find({ organization: req.query.orgName }).count()
+    .then((data) => {
+        console.log('Data: ', data);
+        res.json(data);
+    })
+    .catch((error) => {
+        console.log('error: ', daerrorta);
+    });
+});
+router.get("/eventReport2", (req, res) => {
+    Event.find({ organization: req.query.orgName }).count()
+    .then((data) => {
+        console.log('Data: ', data);
+        res.json(data);
+    })
+    .catch((error) => {
+        console.log('error: ', daerrorta);
+    });
+});
+router.get("/eventReport3", (req, res) => {
+    Event.find({ organization: req.query.orgName }).count()
+    .then((data) => {
+        console.log('Data: ', data);
+        res.json(data);
+    })
+    .catch((error) => {
+        console.log('error: ', daerrorta);
+    });
+});
+router.get("/eventReport4", (req, res) => {
+    Event.find({ organization: req.query.orgName }).count()
+    .then((data) => {
+        console.log('Data: ', data);
+        res.json(data);
+    })
+    .catch((error) => {
+        console.log('error: ', daerrorta);
+    });
+});
+//#endregion
+
+//#region User Report
+router.get("/userReport1", (req, res) => {
+    Student.find({ name: req.query.userName }).count()
+    .then((data) => {
+        console.log('Data: ', data);
+        res.json(data);
+    })
+    .catch((error) => {
+        console.log('error: ', daerrorta);
+    });
+});
+router.get("/userReport2", (req, res) => {
+    Student.find({ name: req.query.userName }).count()
+    .then((data) => {
+        console.log('Data: ', data);
+        res.json(data);
+    })
+    .catch((error) => {
+        console.log('error: ', daerrorta);
+    });
+});
+router.get("/userReport3", (req, res) => {
+    Student.find({ name: req.query.userName }).count()
+    .then((data) => {
+        console.log('Data: ', data);
+        res.json(data);
+    })
+    .catch((error) => {
+        console.log('error: ', daerrorta);
+    });
+});
+router.get("/userReport4", (req, res) => {
+    Student.find({ name: req.query.userName }).count()
+    .then((data) => {
+        console.log('Data: ', data);
+        res.json(data);
+    })
+    .catch((error) => {
+        console.log('error: ', daerrorta);
+    });
+});
+//#endregion
+
+//#region Org Report
+router.get("/orgReport1", (req, res) => {
+    Organization.find({ orgName: req.query.orgName }).count()
+    .then((data) => {
+        console.log('Data: ', data);
+        res.json(data);
+    })
+    .catch((error) => {
+        console.log('error: ', daerrorta);
+    });
+});
+router.get("/orgReport2", (req, res) => {
+    Organization.find({ orgName: req.query.orgName }).count()
+    .then((data) => {
+        console.log('Data: ', data);
+        res.json(data);
+    })
+    .catch((error) => {
+        console.log('error: ', daerrorta);
+    });
+});
+router.get("/orgReport3", (req, res) => {
+    Organization.find({ orgName: req.query.orgName }).count()
+    .then((data) => {
+        console.log('Data: ', data);
+        res.json(data);
+    })
+    .catch((error) => {
+        console.log('error: ', daerrorta);
+    });
+});
+router.get("/orgReport4", (req, res) => {
+    Organization.find({ orgName: req.query.orgName }).count()
+    .then((data) => {
+        console.log('Data: ', data);
+        res.json(data);
+    })
+    .catch((error) => {
+        console.log('error: ', daerrorta);
+    });
+});
+//#endregion
 
 router.post("/registerEvent", (req, res) => {
 
