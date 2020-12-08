@@ -8,12 +8,21 @@ const BlogPost = require('../models/blogPost');
 const Student = require('../models/Student');
 const Organization = require('../models/Organization');
 const Event = require('../models/Event');
+
 // Load input validation
 const validateRegisterInput = require("../validation/register");
 const validateOrgRegisterInput = require("../validation/org_register");
 const validateLoginInput = require("../validation/login");
 const validateOrgLoginInput = require("../validation/org_login");
 const validateEventInput = require("../validation/event");
+
+global.currentUser = {
+    id: "",
+    username: "",
+    name: "",
+    password: "",
+    type: ""
+}
 
 // Routes
 
@@ -37,7 +46,8 @@ router.post("/register", (req, res) => {
             const newStudent = new Student({
                 name: data.name,
                 username: data.username,
-                password: data.password
+                password: data.password,
+                events: []
             });
             // Hash password before saving in database
             bcrypt.genSalt(10, (err, salt) => {
@@ -74,7 +84,8 @@ router.post("/registerOrg", (req, res) => {
             const newOrganization = new Organization({
                 orgUser: data.orgUser,
                 orgPass: data.orgPass,
-                orgName: data.orgName
+                orgName: data.orgName,
+                events: []
             });
             // Hash password before saving in database
             bcrypt.genSalt(10, (err, salt) => {
@@ -91,21 +102,43 @@ router.post("/registerOrg", (req, res) => {
     });
 });
 
-// @route POST api/registerEvent
-// @desc Register new Event
+// @route POST api/
+// @desc Get all the Events 
 // @access Public
 
 router.get('/', (req, res) => {
-
-
     Event.find({})
-    .then((data) => {
-        console.log('Data: ', data);
-        res.json(data);
-    })
-    .catch((error) => {
-        console.log('error: ', daerrorta);
-    });
+        .then((data) => {
+            // console.log('Data: ', data);
+            res.json(data);
+        })
+        .catch((error) => {
+            console.log('error: ', daerrorta);
+        });
+
+});
+
+// @route POST api/deleteUser
+// @desc Delete the account with the current logged in user 
+// @access Public
+
+router.post('/deleteUser', (req, res) => {
+    console.log("Current User", currentUser);
+    if (currentUser.type == "Student") {
+        Student.deleteOne({ username: currentUser.username }).then(function () {
+            console.log("Current User Data Deleted"); // Success
+        }).catch(function (error) {
+            console.log(error); // Failure 
+        });
+    }
+    else {
+        Organization.deleteOne({ orgUser: currentUser.username }).then(function () {
+            console.log("Current User Data Deleted"); // Success
+            console.log("New User Data: ")
+        }).catch(function (error) {
+            console.log(error); // Failure 
+        });
+    }
 
 });
 
@@ -292,7 +325,7 @@ router.get("/orgReport4", (req, res) => {
 //#endregion
 
 router.post("/registerEvent", (req, res) => {
-    
+
     // Form validation
     // const { errors, isValid } = validateOrgRegisterInput(req.body);
     // // Check validation
@@ -300,22 +333,30 @@ router.post("/registerEvent", (req, res) => {
     //     console.log("Invalid data");
     //     return res.status(400).json(errors);
     // }
-    
-    console.log('Body: ', req.body)
+
+    // console.log('Body: ', req.body)
 
     const data = req.body;
-
     const newEvent = new Event(data);
+    newEvent.attendees = [];
 
     newEvent.save((error) => {
         if (error) {
             res.status(500).json({ msg: 'Sorry, internal server errors' });
             return;
         }
-        
+
         return res.json({
             msg: 'Your data has been saved!'
         });
+    });
+
+    // Adding the new Event created to the list of events for an organization
+    var eventName = newEvent.headline;
+    Organization.updateOne({ orgUser: newEvent.organization }, { $push: { events: eventName } }).then(function () {
+        console.log("Event added to organization"); // Success
+    }).catch(function (error) {
+        console.log(error); // Failure 
     });
 });
 
@@ -353,6 +394,13 @@ router.post("/login", (req, res) => {
                     id: user.id,
                     name: user.name
                 };
+
+                currentUser.id = user.id;
+                currentUser.username = user.username;
+                currentUser.password = user.password;
+                currentUser.name = user.name;
+                currentUser.type = "Student";
+
                 // Sign token
                 jwt.sign(
                     payload,
@@ -405,8 +453,15 @@ router.post("/loginOrg", (req, res) => {
                 // Create JWT Payload
                 const payload = {
                     id: user.id,
-                    name: user.name
+                    name: user.orgName
                 };
+
+                currentUser.id = user.id;
+                currentUser.username = user.orgUser;
+                currentUser.password = user.orgPass;
+                currentUser.name = user.orgName;
+                currentUser.type = "Organization";
+
                 // Sign token
                 jwt.sign(
                     payload,
@@ -428,6 +483,112 @@ router.post("/loginOrg", (req, res) => {
             }
         });
     });
+});
+
+// @route POST api/updateUser
+// @desc update the current user details 
+// @access Public
+router.post("/updateUser", (req, res) => {
+    const data = req.body;
+
+    console.log("Updating the current Student");
+    console.log("User: ", currentUser);
+    console.log("Data: ", data);
+
+    if (data.name == "") {
+        data.name = currentUser.name;
+    }
+
+    if (data.username == "") {
+        data.username = currentUser.username;
+    }
+
+    if (data.password == "") {
+        data.password = currentUser.password;
+    }
+    else {
+        // Hash password before saving in database
+        bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(data.password, salt, (err, hash) => {
+                if (err) throw err;
+                data.password = hash;
+                currentUser.password = data.password;
+
+                // Query to update the current user
+                Student.updateOne({ username: currentUser.username },
+                    { "$set": { password: data.password } })
+                    .then(function () {
+                        console.log("Current User Updated"); // Success
+                    }).catch(function (error) {
+                        console.log(error); // Failure 
+                    });
+            });
+        });
+    }
+    // Query to update the current user
+    Student.updateOne({ username: currentUser.username },
+        { "$set": { name: data.name, username: data.username } })
+        .then(function () {
+            console.log("Current User Updated"); // Success
+        }).catch(function (error) {
+            console.log(error); // Failure 
+        });
+
+    currentUser.username = data.username;
+    currentUser.name = data.name;
+});
+
+// @route POST api/updateOrg
+// @desc update the current organization details 
+// @access Public
+router.post("/updateOrg", (req, res) => {
+    const data = req.body;
+
+    console.log("Updating the current Organization");
+
+    if (data.orgName == "") {
+        data.orgName = currentUser.name;
+    }
+
+    if (data.orgUser == "") {
+        data.orgUser = currentUser.username;
+    }
+
+    if (data.orgPass == "") {
+        data.orgPass = currentUser.password;
+    }
+    else {
+        // Hash password before saving in database
+        bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(data.orgPass, salt, (err, hash) => {
+                if (err) throw err;
+                data.orgPass = hash;
+                currentUser.password = data.orgPass
+
+                // Query to update the current user
+                Organization.updateOne({ username: currentUser.username },
+                    { "$set": { password: data.orgPass } })
+                    .then(function () {
+                        console.log("Current Organization Updated"); // Success
+                    }).catch(function (error) {
+                        console.log(error); // Failure 
+                    });
+            });
+        });
+    }
+    console.log("User: ", currentUser);
+    console.log("Data: ", data);
+    // Query to update the current user
+    Organization.updateOne({ orgUser: currentUser.username },
+        { "$set": { orgName: data.orgName, orgUser: data.orgUser } })
+        .then(function () {
+            console.log("Current Organization Updated"); // Success
+        }).catch(function (error) {
+            console.log(error); // Failure 
+        });
+
+    currentUser.username = data.orgUser;
+    currentUser.name = data.orgName;
 });
 
 module.exports = router;
