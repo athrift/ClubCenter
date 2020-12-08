@@ -22,7 +22,11 @@ import PrivateRoute from "./components/PrivateRoute";
 import Dashboard from "./components/Dashboard";
 import Post from "./components/Post";
 import NavigationBar from "./components/NavigationBar";
-
+import Reports from "./components/Reports";
+import AllEventsReport from "./components/AllEventsReport";
+import EventReport from "./components/EventReport";
+import UserReport from "./components/UserReport";
+import OrgReport from "./components/OrgReport";
 
 // Redux Management
 import { Provider } from "react-redux";
@@ -96,6 +100,7 @@ class App extends React.Component {
                 <Link to="/">
                   <img src={image} alt="ClubCenter" class="mainLogo" />
                 </Link>
+                <Link to="/Reports">Reports</Link>
                 <Link to="/Create">Create Account</Link>
                 <Link to="/Login">Login</Link>
               </li>
@@ -103,6 +108,11 @@ class App extends React.Component {
             <Route exact={true} path="/" component={Home} className="Home" />
             <Route exact={true} path="/Create" component={Create} className="Create" />
             <Route exact={true} path="/Login" component={Login} className="Login" />
+            <Route exact={true} path="/Reports" component={Reports} className="club-center-report" />
+            <Route exact={true} path="/AllEventsReport" component={AllEventsReport} className="club-center-report" />
+            <Route exact={true} path="/EventReport" component={EventReport} className="club-center-report" />
+            <Route exact={true} path="/UserReport" component={UserReport} className="club-center-report" />
+            <Route exact={true} path="/OrgReport" component={OrgReport} className="club-center-report" />
             <Switch>
               <PrivateRoute exact path="/Dashboard" component={Dashboard} className="Dashboard" />
               <PrivateRoute exact path="/Post" component={Post} className="Post" />
