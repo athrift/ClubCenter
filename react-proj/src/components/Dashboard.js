@@ -5,6 +5,7 @@ import { logoutUser } from "../actions/authActions";
 import { Link, Route, withRouter, Switch } from "react-router-dom";
 import axios from 'axios';
 import { Container, Row, Col, Button, Form, Card } from 'react-bootstrap';
+import image from "../Images/clubcenter.png";
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 
@@ -37,6 +38,8 @@ class Dashboard extends Component {
     deleteUser = e => {
         // Sending the data from the html form to the server
         e.preventDefault();
+        console.log("User Logged Out\n")
+        this.props.logoutUser();
         axios({
             url: '/api/deleteUser',
             method: 'POST',
@@ -95,17 +98,56 @@ class Dashboard extends Component {
 
         return (
             <div className="Dashboard">
-                <header className="Dashboard-header">
-                    <div className="eventPost">
-                        {this.displayPost(this.state.posts)}
-                    </div>
-                    <div className="buttons">
+                <nav className="navbar navbar-expand-lg fixed-top navbar-light bg-dark justify-content-center">
+                    <Link to="/">
+                      <img src={image} alt="ClubCenter" width="500" class="mainLogo navbar-left" />
+                    </Link>
+                    <ul class="navbar-nav">
+                    <li class="nav-item">
                         <div className="newPost">
                             <Form onSubmit={this.newPost}>
                                 <Button variant="secondary" type="submit">+</Button>
                                 {/* <Button variant="secondary" type="submit"><Link to="/Post">+</Link>
                                 <Route exact={true} path="/Post" component={Post} className="Post" />
                                 </Button> */}
+
+                            </Form>
+                        </div>
+                      </li>
+                      <li class="nav-item">
+                    <div className="updateUser" >
+                        <Form onSubmit={this.updateUser}>
+                            <Button variant="secondary" type="submit">Update Account</Button>
+                        </Form>
+                    </div>
+                    </li>
+                    <li class="nav-item">
+                    <div className="logout" >
+                        <Form onSubmit={this.logout}>
+                            <Button variant="secondary" type="submit">Logout</Button>
+                        </Form>
+                    </div>
+                    </li>
+                    <li class="nav-item">
+                    <div className="deleteAccount" >
+                        <Form onSubmit={this.deleteUser}>
+                            <Button variant="secondary" type="submit">Delete Account</Button>
+                        </Form>
+                    </div>
+                    </li>
+                    </ul>
+                </nav>
+                <header className="Dashboard-header" class="d-flex justify-content-center mt-5">
+                    <div className="eventPost">
+                        {this.displayPost(this.state.posts)}
+                    </div>
+                    {/*}<div className="buttons">
+                        <div className="newPost">
+                            <Form onSubmit={this.newPost}>
+                                <Button variant="secondary" type="submit">+</Button>
+                                {/* <Button variant="secondary" type="submit"><Link to="/Post">+</Link>
+                                <Route exact={true} path="/Post" component={Post} className="Post" />
+                                </Button> */}  {/*
 
                             </Form>
                         </div>
@@ -124,7 +166,7 @@ class Dashboard extends Component {
                                 <Button variant="secondary" type="submit">Delete Account</Button>
                             </Form>
                         </div>
-                    </div>
+                    </div>*/}
                 </header>
             </div >
         );

@@ -10,6 +10,8 @@ import { connect } from "react-redux";
 import { registerUser } from "../actions/authActions";
 import { registerOrg } from "../actions/authActions";
 import classnames from "classnames";
+import image from "../Images/clubcenter.png";
+
 
 class Create extends React.Component {
 
@@ -38,7 +40,7 @@ class Create extends React.Component {
   //   }
   // }
 
-  // Function which handles the user input 
+  // Function which handles the user input
   // i.e when user inputs the username and password
 
   handleChange = ({ target }) => {
@@ -123,6 +125,17 @@ class Create extends React.Component {
     return (
       <div className="Create">
         <header className="Create-header">
+        <nav className="navbar navbar-expand-lg fixed-top navbar-light bg-dark justify-content-center">
+            <Link to="/">
+              <img src={image} alt="ClubCenter" width="500" class="mainLogo navbar-left" />
+            </Link>
+            <ul class="navbar-nav">
+            <Link to="/Create">Create Account</Link>
+            <li class="ml-3">
+            <Link to="/Login">Login</Link>
+            </li>
+            </ul>
+            </nav>
           <div className="Student">
             <Form onSubmit={this.submit}>
               <Form.Group controlId="FormEmail">

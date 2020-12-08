@@ -6,6 +6,7 @@ import Create from "./Create";
 import Login from "./Login";
 import PrivateRoute from "./PrivateRoute";
 import Dashboard from "./Dashboard";
+import image from "../Images/clubcenter.png";
 
 
 class NavigationBar extends React.Component {
@@ -20,8 +21,11 @@ class NavigationBar extends React.Component {
     return (
 
       <Navbar>
-        
-          <Nav className="ml-auto">
+
+          <Nav className="nav navbar-nav">
+          <Link to="/">
+            <img src={image} alt="ClubCenter" class="mainLogo" />
+          </Link>
           {!isLoggedin && (<Nav.Link><Link to="/Create">Create Account</Link></Nav.Link>)}
           {!isLoggedin && (<Nav.Link><Link to="/Login">Login</Link></Nav.Link>)}
           {isLoggedin && (<Nav.Link><Link to='/logout'>Logout</Link></Nav.Link>)}

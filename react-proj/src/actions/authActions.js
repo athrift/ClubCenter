@@ -86,7 +86,7 @@ export const loginOrg = orgData => dispatch => {
         );
 };
 
-// Student Update - Update the current user 
+// Student Update - Update the current user
 export const updateUser = (userData, history) => dispatch => {
     axios
         .post("/api/updateUser", userData)
@@ -99,7 +99,7 @@ export const updateUser = (userData, history) => dispatch => {
         );
 }
 
-// Organization Update - Update the current orgr 
+// Organization Update - Update the current orgr
 export const updateOrg = (orgData, history) => dispatch => {
     axios
         .post("/api/updateOrg", orgData)
@@ -135,11 +135,8 @@ export const logoutUser = () => dispatch => {
     localStorage.removeItem("jwtToken");
     // Remove auth header for future requests
     setAuthToken(false);
-    // Set current user to empty object {} 
+    // Set current user to empty object {}
     dispatch(setCurrentUser({}));
     //set isAuthenticated to false
 
 };
-
-
-

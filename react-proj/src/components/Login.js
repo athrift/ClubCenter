@@ -10,6 +10,7 @@ import { connect } from "react-redux";
 import { loginUser } from "../actions/authActions";
 import { loginOrg } from "../actions/authActions";
 import classnames from "classnames";
+import image from "../Images/clubcenter.png";
 
 class Login extends React.Component {
 
@@ -32,14 +33,14 @@ class Login extends React.Component {
     }
   }
 
-  // TODO: Fix the part where a Logged in User cannot navigate to Create/Login Pages 
+  // TODO: Fix the part where a Logged in User cannot navigate to Create/Login Pages
   // componentDidMount() {
   //   // If logged in and user navigates to Login page, should redirect them to dashboard
   //   if (this.props.auth.isAuthenticated) {
   //     this.props.history.push("/Dashboard");
   //   }
 
-  //   // Setting the current user global var 
+  //   // Setting the current user global var
   // }
 
   handleChange = ({ target }) => {
@@ -117,6 +118,17 @@ class Login extends React.Component {
     return (
       <div className="Login">
         <header className="Login-header">
+        <nav className="navbar navbar-expand-lg fixed-top navbar-light bg-dark justify-content-center">
+            <Link to="/">
+              <img src={image} alt="ClubCenter" width="500" class="mainLogo navbar-left" />
+            </Link>
+            <ul class="navbar-nav">
+            <Link to="/Create">Create Account</Link>
+            <li class="ml-3">
+            <Link to="/Login">Login</Link>
+            </li>
+            </ul>
+            </nav>
           <div className="Student">
             <Form onSubmit={this.submit}>
               <Form.Group controlId="FormEmail">

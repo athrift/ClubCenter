@@ -13,6 +13,7 @@ import jwt_decode from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
 import { setCurrentUser, logoutUser, isAuthenticated } from "./actions/authActions";
 
+import { connect } from "react-redux";
 
 //Add external pages
 
@@ -50,14 +51,22 @@ if (localStorage.jwtToken) {
     // Logout user
     store.dispatch(logoutUser());
     // Redirect to login
-    window.location.href = "./Login";
+    window.location.href = "./login";
   }
 }
 //Add internal pages
 
 const Home = () => (
   <div className="Homepage">
-    <h2>Home</h2>
+      <Link to="/">
+        <img src={image} alt="ClubCenter" width="500" class="Logo navbar-left" />
+      </Link>
+      <ul class="navbar-nav">
+      <Link to="/Create">Create Account</Link>
+      <li class="ml-3">
+      <Link to="/Login">Login</Link>
+      </li>
+      </ul>
   </div>
 );
 
@@ -73,7 +82,7 @@ class App extends React.Component {
 
   }
 
-  login() {
+  login = () => {
     this.setState({ isAuthenticated: true });
   }
 
@@ -85,7 +94,7 @@ class App extends React.Component {
 
   render() {
 
-    // const { isAuthenticated } = this.state;
+    //const { isAuthenticated } = this.state.isAuthenticated;
 
     console.log("Code rendering App.js\n");
     console.log('State: ', this.state);
@@ -95,8 +104,8 @@ class App extends React.Component {
           <header className="App-header">
             {/* Tried to implement navBar switch but rendering isAuthenticated not working,
            to see you can uncomment the line below and put in true or false values for isAuthenticated */}
-            {/* <NavigationBar isLoggedin={isAuthenticated} logout={this.logoutUser}/> */}
-            <ul className="nav navbar-nav">
+            {/*}<NavigationBar isLoggedin={this.state.isAuthenticated} logout={this.logoutUser}/>*/}
+            {/*}<ul className="nav navbar-nav">
               <li>
                 <Link to="/">
                   <img src={image} alt="ClubCenter" class="mainLogo" />
@@ -104,12 +113,12 @@ class App extends React.Component {
                 <Link to="/Create">Create Account</Link>
                 <Link to="/Login">Login</Link>
               </li>
-            </ul>
+            </ul>*/}
             <Route exact={true} path="/" component={Home} className="Home" />
             <Route exact={true} path="/Create" component={Create} className="Create" />
-            <Route exact={true} path="/Login" component={Login} className="Login" />
+            <Route exact={true} path="/Login" component={Login} className="Login"/>
             <Switch>
-              <PrivateRoute exact path="/Dashboard" component={Dashboard} className="Dashboard" />
+              <PrivateRoute exact path="/Dashboard" component={Dashboard} className="Dashboard"/>
               <PrivateRoute exact path="/Post" component={Post} className="Post" />
               <PrivateRoute exact path="/Update" component={Update} className="Update" />
             </Switch>
