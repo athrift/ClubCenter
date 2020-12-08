@@ -10,7 +10,10 @@ const EventSchema = new Schema({
         type: String,
     },
     time: String,
-    place: String
+    place: String,
+    attendees: [{
+        type: String
+    }]
 
 });
 

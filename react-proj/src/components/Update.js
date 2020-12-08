@@ -11,14 +11,13 @@ import { updateUser } from "../actions/authActions";
 import { updateOrg } from "../actions/authActions";
 import classnames from "classnames";
 
+var type = localStorage.getItem("Type");;
+
 class Update extends React.Component {
     state = {
         username: '',
         password: '',
         name: '',
-        orgUser: '',
-        orgPass: '',
-        orgName: '',
     };
 
     componentWillReceiveProps(nextProps) {
@@ -46,13 +45,24 @@ class Update extends React.Component {
             username: '',
             password: '',
             name: '',
-            orgUser: '',
-            orgPass: '',
-            orgName: ''
         });
     };
 
-    // Function which handles the changes when the Submit Button is clicked for Student
+    updateUser = (event) => {
+        console.log("Type: ", type);
+        event.preventDefault();
+        const payload = {
+            username: this.state.username,
+            password: this.state.password,
+            name: this.state.name
+        };
+
+        this.props.updateUser(payload);
+
+        // Redirect 
+        this.props.history.push("/Dashboard");
+    };
+
     updateStudent = (event) => {
         event.preventDefault();
         const payload = {
@@ -69,79 +79,62 @@ class Update extends React.Component {
 
     updateOrg = (event) => {
         event.preventDefault();
-
         const payload = {
-            orgUser: this.state.orgUser,
-            orgName: this.state.orgName,
-            orgPass: this.state.orgPass
+            orgUser: this.state.username,
+            orgName: this.state.name,
+            orgPass: this.state.password
         };
 
+        console.log("Data Sent: ", payload);
         this.props.updateOrg(payload);
+        // Redirect 
+        this.props.history.push("/Dashboard");
     };
 
-    render() {
-        var type = localStorage.getItem("Type");
 
+    render() {
+        type = localStorage.getItem("Type");
+
+        console.log("Type: ", type);
+        let button;
+        let placeholder;
         if (type == "Student") {
-            return (
-                <div className="Update">
-                    <header className="Update-header">
-                        <div className="Student">
-                            <Form onSubmit={this.updateStudent}>
-                                <Form.Group controlId="FormEmail">
-                                    <h2>Update Student Account</h2>
-                                    <p></p>
-                                    <Form.Label>Email</Form.Label>
-                                    <Form.Control type="text" name="username" placeholder="example@email.com"
-                                        value={this.state.username} onChange={this.handleChange} />
-                                </Form.Group>
-                                <Form.Group controlId="FormName">
-                                    <Form.Label>Name</Form.Label>
-                                    <Form.Control type="text" name="name" placeholder="John Smith"
-                                        value={this.state.name} onChange={this.handleChange} />
-                                </Form.Group>
-                                <Form.Group controlId="FormPassword">
-                                    <Form.Label>Password</Form.Label>
-                                    <Form.Control type="password" name="password" placeholder="Password"
-                                        value={this.state.password} onChange={this.handleChange} />
-                                </Form.Group>
-                                <Button variant="secondary" type="submit">Update Account</Button>
-                            </Form>
-                        </div>
-                    </header>
-                </div >
-            );
+            button = <Button variant="secondary" type="submit" onClick={this.updateStudent}>Update Account</Button>;
+            placeholder = "John Smith";
+        } else {
+            button = <Button variant="secondary" type="submit" onClick={this.updateOrg}>Update Account</Button>;
+            placeholder = "After School Club";
         }
-        else {
-            return (
-                <div className="Update">
-                    <header className="Update-header">
-                        <div className="Org">
-                            <Form onSubmit={this.updateOrg}>
-                                <Form.Group controlId="FormEmail">
-                                    <h2>Update Organization Account</h2>
-                                    <p></p>
-                                    <Form.Label>Email</Form.Label>
-                                    <Form.Control type="text" name="username" placeholder="example@email.com"
-                                        value={this.state.orgUser} onChange={this.handleChange} />
-                                </Form.Group>
-                                <Form.Group controlId="FormName">
-                                    <Form.Label>Name</Form.Label>
-                                    <Form.Control type="text" name="name" placeholder="John Smith"
-                                        value={this.state.orgName} onChange={this.handleChange} />
-                                </Form.Group>
-                                <Form.Group controlId="FormPassword">
-                                    <Form.Label>Password</Form.Label>
-                                    <Form.Control type="password" name="password" placeholder="Password"
-                                        value={this.state.orgPass} onChange={this.handleChange} />
-                                </Form.Group>
-                                <Button variant="secondary" type="submit">Update Account</Button>
-                            </Form>
-                        </div>
-                    </header>
-                </div >
-            );
-        }
+
+        return (
+            <div className="Update">
+                <header className="Update-header">
+                    <div className="Student">
+                        <Form>
+                            <Form.Group controlId="FormEmail">
+                                <h2>Update Account</h2>
+                                <p></p>
+                                <Form.Label>Email</Form.Label>
+                                <Form.Control type="text" name="username" placeholder="example@email.com"
+                                    value={this.state.username} onChange={this.handleChange} />
+                            </Form.Group>
+                            <Form.Group controlId="FormName">
+                                <Form.Label>Name</Form.Label>
+                                <Form.Control type="text" name="name" placeholder={placeholder}
+                                    value={this.state.name} onChange={this.handleChange} />
+                            </Form.Group>
+                            <Form.Group controlId="FormPassword">
+                                <Form.Label>Password</Form.Label>
+                                <Form.Control type="password" name="password" placeholder="Password"
+                                    value={this.state.password} onChange={this.handleChange} />
+                            </Form.Group>
+                            {button}
+                        </Form>
+                    </div>
+                </header>
+            </div >
+        );
+
     }
 
 }

@@ -46,7 +46,8 @@ router.post("/register", (req, res) => {
             const newStudent = new Student({
                 name: data.name,
                 username: data.username,
-                password: data.password
+                password: data.password,
+                events: []
             });
             // Hash password before saving in database
             bcrypt.genSalt(10, (err, salt) => {
@@ -83,7 +84,8 @@ router.post("/registerOrg", (req, res) => {
             const newOrganization = new Organization({
                 orgUser: data.orgUser,
                 orgPass: data.orgPass,
-                orgName: data.orgName
+                orgName: data.orgName,
+                events: []
             });
             // Hash password before saving in database
             bcrypt.genSalt(10, (err, salt) => {
@@ -154,8 +156,8 @@ router.post("/registerEvent", (req, res) => {
     // console.log('Body: ', req.body)
 
     const data = req.body;
-
     const newEvent = new Event(data);
+    newEvent.attendees = [];
 
     newEvent.save((error) => {
         if (error) {
@@ -166,6 +168,14 @@ router.post("/registerEvent", (req, res) => {
         return res.json({
             msg: 'Your data has been saved!'
         });
+    });
+
+    // Adding the new Event created to the list of events for an organization
+    var eventName = newEvent.headline;
+    Organization.updateOne({ orgUser: newEvent.organization }, { $push: { events: eventName } }).then(function () {
+        console.log("Event added to organization"); // Success
+    }).catch(function (error) {
+        console.log(error); // Failure 
     });
 });
 

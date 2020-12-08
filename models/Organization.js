@@ -10,7 +10,10 @@ const OrganizationSchema = new Schema({
     date: {
         type: String,
         default: Date.now()
-    }
+    },
+    events: [{
+        type: String
+    }]
 });
 
 // Model
