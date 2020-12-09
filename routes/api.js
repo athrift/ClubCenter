@@ -154,7 +154,7 @@ router.post('/handleRSVP', (req, res) => {
       });
 
 
-    s//ession.commitTransaction();
+    //session.commitTransaction();
 
 
 });
