@@ -86,6 +86,7 @@ class Dashboard extends Component {
                         <Card.Text>Time: {post.time}</Card.Text>
                         <Card.Text>Date: {post.date}</Card.Text>
                         <Card.Text>Location: {post.place}</Card.Text>
+                        <Card.Text>Attendees: {post.numattendees}</Card.Text>
                         <Button variant="secondary"
                             onClick={() => this.handleRSVP(post)}>RSVP</Button>
                     </Card.Body>

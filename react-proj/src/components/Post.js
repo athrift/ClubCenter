@@ -36,7 +36,7 @@ class Post extends Component {
       const data = response.data;
       this.setState({posts: data})
       console.log('Data has been recieved');
-      
+
     })
     .catch(() => {
       console.log('Internal server error');
@@ -51,7 +51,8 @@ class Post extends Component {
       description: '',
       time: '',
       date: '',
-      place: ''
+      place: '',
+      numattendees: 0
     });
   };
 
@@ -64,7 +65,8 @@ class Post extends Component {
       description: this.state.description,
       time: this.state.time,
       date: this.state.date,
-      place: this.state.place
+      place: this.state.place,
+      numattendees: 0
     };
 
     //this.props.registerEvent(payload, this.props.history);
@@ -89,7 +91,7 @@ class Post extends Component {
 
   cancel = e => {
     this.props.history.push("/Dashboard");
-       
+
   };
 
   displayPost = (posts) => {
@@ -112,19 +114,19 @@ class Post extends Component {
         return (
             <div className="Post">
                 <header className="Post-header">
-                
-                
+
+
                 <div className="Org">
             <Form onSubmit={this.submit}>
-            
+
                 <h2>Post</h2>
-                
+
                 <Form.Group controlId="FormOrg">
               <h2>Event</h2>
               <p></p>
-              
+
               <Form.Label>Organization</Form.Label>
-              
+
               <Form.Control type="text" name="organization" placeholder="Bob Ross Club" value={this.state.organization} onChange={this.handleChange} />
             </Form.Group>
 
@@ -158,7 +160,7 @@ class Post extends Component {
               <Button variant="secondary" type="submit">Post</Button>
             </Form>
 
-            
+
           </div>
 
           <div className="cancel">

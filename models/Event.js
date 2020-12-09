@@ -11,6 +11,7 @@ const EventSchema = new Schema({
     },
     time: String,
     place: String,
+    numattendees: Number,
     attendees: [{
         type: String
     }]

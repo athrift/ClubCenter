@@ -16,6 +16,7 @@ const validateLoginInput = require("../validation/login");
 const validateOrgLoginInput = require("../validation/org_login");
 const validateEventInput = require("../validation/event");
 
+
 global.currentUser = {
     id: "",
     username: "",
@@ -103,7 +104,7 @@ router.post("/registerOrg", (req, res) => {
 });
 
 // @route POST api/
-// @desc Get all the Events 
+// @desc Get all the Events
 // @access Public
 
 router.get('/', (req, res) => {
@@ -119,7 +120,7 @@ router.get('/', (req, res) => {
 });
 
 // @route POST api/handleRSVP
-// @desc Add the event information to the correct tables and to the student table 
+// @desc Add the event information to the correct tables and to the student table
 // @access Public
 
 router.post('/handleRSVP', (req, res) => {
@@ -131,20 +132,35 @@ router.post('/handleRSVP', (req, res) => {
     Student.updateOne({ username: currentUser.username }, { $push: { events: post.headline } }).then(function () {
         console.log("Event info added to student"); // Success
     }).catch(function (error) {
-        console.log(error); // Failure 
+        console.log(error); // Failure
     });
 
     // Adding the Student information to the attendees array of the Event
     Event.updateOne({ headline: post.headline }, { $push: { attendees: currentUser.username } }).then(function () {
         console.log("Student info added to event"); // Success
     }).catch(function (error) {
-        console.log(error); // Failure 
+        console.log(error); // Failure
     });
+
+
+    //Transaction with Isolation read commited
+
+    //session.startTransaction( { readConcern: { level: "local" }, writeConcern: { w: "majority" } } );
+
+      Event.updateOne({ headline: post.headline }, { $inc: { numattendees: 1}}).then(function () {
+          console.log("Student info added to event"); // Success
+      }).catch(function (error) {
+          console.log(error); // Failure
+      });
+
+
+    s//ession.commitTransaction();
+
 
 });
 
 // @route POST api/deleteUser
-// @desc Delete the account with the current logged in user 
+// @desc Delete the account with the current logged in user
 // @access Public
 
 router.post('/deleteUser', (req, res) => {
@@ -153,7 +169,7 @@ router.post('/deleteUser', (req, res) => {
         Student.deleteOne({ username: currentUser.username }).then(function () {
             console.log("Current User Data Deleted"); // Success
         }).catch(function (error) {
-            console.log(error); // Failure 
+            console.log(error); // Failure
         });
     }
     else {
@@ -161,7 +177,7 @@ router.post('/deleteUser', (req, res) => {
             console.log("Current User Data Deleted"); // Success
             console.log("New User Data: ")
         }).catch(function (error) {
-            console.log(error); // Failure 
+            console.log(error); // Failure
         });
     }
 
@@ -381,7 +397,7 @@ router.post("/registerEvent", (req, res) => {
     Organization.updateOne({ orgUser: newEvent.organization }, { $push: { events: eventName } }).then(function () {
         console.log("Event added to organization"); // Success
     }).catch(function (error) {
-        console.log(error); // Failure 
+        console.log(error); // Failure
     });
 });
 
@@ -511,7 +527,7 @@ router.post("/loginOrg", (req, res) => {
 });
 
 // @route POST api/updateUser
-// @desc update the current user details 
+// @desc update the current user details
 // @access Public
 router.post("/updateUser", (req, res) => {
     const data = req.body;
@@ -545,7 +561,7 @@ router.post("/updateUser", (req, res) => {
                     .then(function () {
                         console.log("Current User Updated"); // Success
                     }).catch(function (error) {
-                        console.log(error); // Failure 
+                        console.log(error); // Failure
                     });
             });
         });
@@ -556,7 +572,7 @@ router.post("/updateUser", (req, res) => {
         .then(function () {
             console.log("Current User Updated"); // Success
         }).catch(function (error) {
-            console.log(error); // Failure 
+            console.log(error); // Failure
         });
 
     currentUser.username = data.username;
@@ -564,7 +580,7 @@ router.post("/updateUser", (req, res) => {
 });
 
 // @route POST api/updateOrg
-// @desc update the current organization details 
+// @desc update the current organization details
 // @access Public
 router.post("/updateOrg", (req, res) => {
     const data = req.body;
@@ -596,7 +612,7 @@ router.post("/updateOrg", (req, res) => {
                     .then(function () {
                         console.log("Current Organization Updated"); // Success
                     }).catch(function (error) {
-                        console.log(error); // Failure 
+                        console.log(error); // Failure
                     });
             });
         });
@@ -609,7 +625,7 @@ router.post("/updateOrg", (req, res) => {
         .then(function () {
             console.log("Current Organization Updated"); // Success
         }).catch(function (error) {
-            console.log(error); // Failure 
+            console.log(error); // Failure
         });
 
     currentUser.username = data.orgUser;
