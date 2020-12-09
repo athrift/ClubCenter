@@ -22,6 +22,8 @@ class Create extends React.Component {
     orgUser: '',
     orgPass: '',
     orgName: '',
+    interest: '',
+    department: '',
     errors: {}
   };
 
@@ -56,7 +58,9 @@ class Create extends React.Component {
       name: '',
       orgUser: '',
       orgPass: '',
-      orgName: ''
+      orgName: '',
+      interest: '',
+      department: ''
     });
   };
 
@@ -71,20 +75,23 @@ class Create extends React.Component {
     };
 
     this.props.registerUser(payload, this.props.history);
-
+    const payload2 = {
+      username: this.state.username,
+      interest: this.state.interest.split(", ")
+    };
     // // Sending the data from the html form to the server
-    // axios({
-    //   url: '/api/register',
-    //   method: 'POST',
-    //   data: payload
-    // })
-    //   .then(() => {
-    //     console.log('Data has been sent to the server');
-    //     this.resetUserInputs();
-    //   })
-    //   .catch(() => {
-    //     console.log('Internal server error');
-    //   });;
+    axios({
+      url: '/api/interest',
+      method: 'POST',
+      data: payload2
+    })
+      .then(() => {
+        console.log('Data has been sent to the server');
+        this.resetUserInputs();
+      })
+      .catch(() => {
+        console.log('Internal server error');
+      });;
   };
 
   // Function which handles the changes when the Submit Button is clicked for Organisation
@@ -99,19 +106,22 @@ class Create extends React.Component {
 
     // Sending the data from the html form to the server
     this.props.registerOrg(payload, this.props.history);
-
-    // axios({
-    //   url: '/api/registerOrg',
-    //   method: 'POST',
-    //   data: payload
-    // })
-    //   .then(() => {
-    //     console.log('Data has been sent to the server');
-    //     this.resetUserInputs();
-    //   })
-    //   .catch(() => {
-    //     console.log('Internal server error');
-    //   });;
+    const payload2 = {
+      department: this.state.department,
+      orgName: this.state.orgName
+    };
+    axios({
+      url: '/api/dept',
+      method: 'POST',
+      data: payload2
+    })
+      .then(() => {
+        console.log('Data has been sent to the server');
+        this.resetUserInputs();
+      })
+      .catch(() => {
+        console.log('Internal server error');
+      });;
   };
 
 
@@ -157,6 +167,10 @@ class Create extends React.Component {
                     invalid: errors.name
                   })} />
               </Form.Group>
+              <Form.Group controlId="FormInterest">
+                <Form.Label>Interests</Form.Label>
+                <Form.Control type="text" name="interest" placeholder="art, music, computers" value={this.state.interest} onChange={this.handleChange} />
+              </Form.Group>
               <Form.Group controlId="FormPassword">
                 <Form.Label>Password</Form.Label>
                 <Form.Control type="password" name="password" placeholder="Password"
@@ -180,6 +194,10 @@ class Create extends React.Component {
               <Form.Group controlId="FormName">
                 <Form.Label>Organization Name</Form.Label>
                 <Form.Control type="text" name="orgName" placeholder="After School Club" value={this.state.orgName} onChange={this.handleChange} />
+              </Form.Group>
+              <Form.Group controlId="FormDept">
+                <Form.Label>Department</Form.Label>
+                <Form.Control type="select" name="department" placeholder="College of Science" value={this.state.department} onChange={this.handleChange} />
               </Form.Group>
               <Form.Group controlId="FormPassword2">
                 <Form.Label>Password</Form.Label>
