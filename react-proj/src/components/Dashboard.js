@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../actions/authActions";
+import { Alert } from 'react-alert';
 import { Link, Route, withRouter, Switch } from "react-router-dom";
 import axios from 'axios';
 import { Container, Row, Col, Button, Form, Card } from 'react-bootstrap';
@@ -35,6 +36,22 @@ class Dashboard extends Component {
 
     }
 
+    // Function to handle the RSVP when the button is clicked
+    handleRSVP = (post) => {
+        axios({
+            url: '/api/handleRSVP',
+            method: 'POST',
+            data: post
+        })
+            .then(() => {
+                console.log('Data has been sent to the server');
+            })
+            .catch(() => {
+                console.log('Internal server error');
+            });;
+
+    }
+
     deleteUser = e => {
         // Sending the data from the html form to the server
         e.preventDefault();
@@ -60,8 +77,6 @@ class Dashboard extends Component {
 
         return posts.map((post, index) => (
             <div key={index}>
-
-
                 <Card style={{ width: '18rem', backgroundColor: "DodgerBlue", margin: "3rem" }}>
                     {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
                     <Card.Body>
@@ -71,10 +86,11 @@ class Dashboard extends Component {
                         <Card.Text>Time: {post.time}</Card.Text>
                         <Card.Text>Date: {post.date}</Card.Text>
                         <Card.Text>Location: {post.place}</Card.Text>
-                        <Button variant="secondary">RSVP</Button>
+                        <Button variant="secondary"
+                            onClick={() => this.handleRSVP(post)}>RSVP</Button>
                     </Card.Body>
                 </Card>
-            </div>
+            </div >
         ));
     };
 
@@ -100,78 +116,54 @@ class Dashboard extends Component {
             <div className="Dashboard">
                 <nav className="navbar navbar-expand-lg fixed-top navbar-light bg-dark justify-content-center">
                     <Link to="/">
-                      <img src={image} alt="ClubCenter" width="500" class="mainLogo navbar-left" />
+                        <img src={image} alt="ClubCenter" width="500" class="mainLogo navbar-left" />
                     </Link>
                     <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <div className="newPost">
-                            <Form onSubmit={this.newPost}>
-                                <Button variant="secondary" type="submit">+</Button>
-                                {/* <Button variant="secondary" type="submit"><Link to="/Post">+</Link>
+                        <li class="nav-item">
+                            <div className="newPost">
+                                <Form onSubmit={this.newPost}>
+                                    <Button variant="secondary" type="submit">+</Button>
+                                    {/* <Button variant="secondary" type="submit"><Link to="/Post">+</Link>
                                 <Route exact={true} path="/Post" component={Post} className="Post" />
                                 </Button> */}
 
-                            </Form>
-                        </div>
-                      </li>
-                      <li class="nav-item">
-                    <div className="updateUser" >
-                        <Form onSubmit={this.updateUser}>
-                            <Button variant="secondary" type="submit">Update Account</Button>
-                        </Form>
-                    </div>
-                    </li>
-                    <li class="nav-item">
-                    <div className="logout" >
-                        <Form onSubmit={this.logout}>
-                            <Button variant="secondary" type="submit">Logout</Button>
-                        </Form>
-                    </div>
-                    </li>
-                    <li class="nav-item">
-                    <div className="deleteAccount" >
-                        <Form onSubmit={this.deleteUser}>
-                            <Button variant="secondary" type="submit">Delete Account</Button>
-                        </Form>
-                    </div>
-                    </li>
+                                </Form>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <div className="updateUser" >
+                                <Form onSubmit={this.updateUser}>
+                                    <Button variant="secondary" type="submit">Update Account</Button>
+                                </Form>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <div className="logout" >
+                                <Form onSubmit={this.logout}>
+                                    <Button variant="secondary" type="submit">Logout</Button>
+                                </Form>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <div className="deleteAccount" >
+                                <Form onSubmit={this.deleteUser}>
+                                    <Button variant="secondary" type="submit">Delete Account</Button>
+                                </Form>
+                            </div>
+                        </li>
                     </ul>
                 </nav>
                 <header className="Dashboard-header" class="d-flex justify-content-center mt-5">
                     <div className="eventPost">
                         {this.displayPost(this.state.posts)}
                     </div>
-                    {/*}<div className="buttons">
-                        <div className="newPost">
-                            <Form onSubmit={this.newPost}>
-                                <Button variant="secondary" type="submit">+</Button>
-                                {/* <Button variant="secondary" type="submit"><Link to="/Post">+</Link>
-                                <Route exact={true} path="/Post" component={Post} className="Post" />
-                                </Button> */}  {/*
-
-                            </Form>
-                        </div>
-                        <div className="updateUser" >
-                            <Form onSubmit={this.updateUser}>
-                                <Button variant="secondary" type="submit">Update Account</Button>
-                            </Form>
-                        </div>
-                        <div className="logout" >
-                            <Form onSubmit={this.logout}>
-                                <Button variant="secondary" type="submit">Logout</Button>
-                            </Form>
-                        </div>
-                        <div className="deleteAccount" >
-                            <Form onSubmit={this.deleteUser}>
-                                <Button variant="secondary" type="submit">Delete Account</Button>
-                            </Form>
-                        </div>
-                    </div>*/}
                 </header>
             </div >
         );
     }
 }
+
+
 
 Dashboard.propTypes = {
     logoutUser: PropTypes.func.isRequired,

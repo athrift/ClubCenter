@@ -118,6 +118,31 @@ router.get('/', (req, res) => {
 
 });
 
+// @route POST api/handleRSVP
+// @desc Add the event information to the correct tables and to the student table 
+// @access Public
+
+router.post('/handleRSVP', (req, res) => {
+    const post = req.body;
+    console.log("CurrentUser", currentUser);
+    console.log("Post", post);
+
+    // Adding the post information to the Student document of the surrent User
+    Student.updateOne({ username: currentUser.username }, { $push: { events: post.headline } }).then(function () {
+        console.log("Event info added to student"); // Success
+    }).catch(function (error) {
+        console.log(error); // Failure 
+    });
+
+    // Adding the Student information to the attendees array of the Event
+    Event.updateOne({ headline: post.headline }, { $push: { attendees: currentUser.username } }).then(function () {
+        console.log("Student info added to event"); // Success
+    }).catch(function (error) {
+        console.log(error); // Failure 
+    });
+
+});
+
 // @route POST api/deleteUser
 // @desc Delete the account with the current logged in user 
 // @access Public
