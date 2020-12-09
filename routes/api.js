@@ -8,6 +8,8 @@ const BlogPost = require('../models/blogPost');
 const Student = require('../models/Student');
 const Organization = require('../models/Organization');
 const Event = require('../models/Event');
+const Interest = require('../models/Interest');
+const Dept = require('../models/Dept');
 
 // Load input validation
 const validateRegisterInput = require("../validation/register");
@@ -351,16 +353,6 @@ router.get("/orgReport4", (req, res) => {
 
 router.post("/registerEvent", (req, res) => {
 
-    // Form validation
-    // const { errors, isValid } = validateOrgRegisterInput(req.body);
-    // // Check validation
-    // if (!isValid) {
-    //     console.log("Invalid data");
-    //     return res.status(400).json(errors);
-    // }
-
-    // console.log('Body: ', req.body)
-
     const data = req.body;
     const newEvent = new Event(data);
     newEvent.attendees = [];
@@ -385,6 +377,44 @@ router.post("/registerEvent", (req, res) => {
     });
 });
 
+router.post("/interest", (req, res) => {
+
+    const data = req.body;
+    const newInterest = new Interest(data);
+   
+
+    newInterest.save((error) => {
+        if (error) {
+            res.status(500).json({ msg: 'Sorry, internal server errors' });
+            return;
+        }
+
+        return res.json({
+            msg: 'Your data has been saved!'
+        });
+    });
+
+    
+});
+router.post("/dept", (req, res) => {
+
+    const data = req.body;
+    const newDept = new Dept(data);
+   
+
+    newDept.save((error) => {
+        if (error) {
+            res.status(500).json({ msg: 'Sorry, internal server errors' });
+            return;
+        }
+
+        return res.json({
+            msg: 'Your data has been saved!'
+        });
+    });
+
+    
+});
 
 
 
