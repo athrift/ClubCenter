@@ -28,7 +28,7 @@
     "react-scripts": "^3.4.4",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "validator": "^13.5.1"
+    "validator": "^13.7.0"
   },
   "description": "CS 348 Project: ClubCenter is an online web-application that allows for clubs and organizations at Purdue University to post about upcoming events so that students can easily search for ways to be involved on campus.",
   "main": "server.js",
